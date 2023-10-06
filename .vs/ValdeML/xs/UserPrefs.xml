@@ -1,0 +1,33 @@
+﻿<Properties StartupConfiguration="{0C2DB367-2F90-4793-8EA8-87296C1AFBF3}|Default">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.ValdeML PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/Gradient.cs">
+    <Files>
+      <File FileName="ValdeML/LinearRegression.cs" />
+      <File FileName="ValdeML/Gradient.cs" Line="4" Column="19" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ValdeML" expanded="True">
+            <Node name="ValdeML" expanded="True">
+              <Node name="Gradient.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>grad.error</Value>
+          <Value>test_tar</Value>
+          <Value>pred</Value>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>

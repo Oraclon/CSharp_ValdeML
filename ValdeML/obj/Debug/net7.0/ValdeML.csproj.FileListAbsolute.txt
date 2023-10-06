@@ -1,0 +1,15 @@
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/bin/Debug/net7.0/ValdeML
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/bin/Debug/net7.0/ValdeML.deps.json
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/bin/Debug/net7.0/ValdeML.runtimeconfig.json
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/bin/Debug/net7.0/ValdeML.dll
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/bin/Debug/net7.0/ValdeML.pdb
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.csproj.AssemblyReference.cache
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.GeneratedMSBuildEditorConfig.editorconfig
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.AssemblyInfoInputs.cache
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.AssemblyInfo.cs
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.csproj.CoreCompileInputs.cache
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.dll
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/refint/ValdeML.dll
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.pdb
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ValdeML.genruntimeconfig.cache
+/Users/angularnodedeveloper/Projects/ValdeML/ValdeML/obj/Debug/net7.0/ref/ValdeML.dll
