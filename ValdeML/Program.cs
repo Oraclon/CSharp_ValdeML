@@ -1,8 +1,12 @@
 ﻿using System;
 
-class Program
+namespace ValdeML
 {
-    static void Main(string[] args)
+    class Program
     {
+        static void Main(string[] args)
+        {
+            Grad grad = new Grad();
+        }
     }
 }
