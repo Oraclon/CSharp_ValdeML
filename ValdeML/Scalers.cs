@@ -1,120 +1,129 @@
-﻿using System;
+using System;
+using System.Reflection.Metadata.Ecma335;
+
 namespace ValdeML
 {
     //To be rewritten
-    public class MinMax
+    public class MINMAX
     {
         public SCALER[] scalers;
-        Transposer transposer = new Transposer();
-
         public MMODEL[] Get(MMODEL[] dataset)
         {
             void Calc(SCALER scaler, double[] input)
             {
-                for (int i = 0; i < input.Length; i++)
+                for (int x = 0; x < input.Length; x++)
                 {
-                    input[i] = (input[i] - scaler.min) / (scaler.max - scaler.min);
+                    input[x] = (input[x] - scaler.min) / (scaler.max - scaler.min);
                 }
             }
-            double[][] inputs = new double[dataset.Length][];
-            for (int i = 0; i < dataset.Length; i++)
-            {
-                inputs[i] = dataset[i].input;
-            }
 
+            Transposer transposer = new Transposer();
+
+            double[][] inputs = dataset.Select(x => x.input).ToArray();
             double[][] inputsT = transposer.TransposeList(inputs);
+
+            //Collect Scalers
             scalers = new SCALER[inputsT.Length];
-            for (int i = 0; i < inputsT.Length; i++)
+            for (int x = 0; x < inputsT.Length; x++)
             {
                 SCALER scaler = new SCALER();
                 scaler.type = "minmax";
-                scaler.min = inputsT[i].Min();
-                scaler.max = inputsT[i].Max();
-                scalers[i] = scaler;
-                Calc(scaler, inputsT[i]);
+                scaler.min = inputsT[x].Min();
+                scaler.max = inputsT[x].Max();
+                scalers[x] = scaler;
+
+                //Do calculations based on inputsT[x];
+                Calc(scaler, inputsT[x]);
             }
             double[][] retransposed = transposer.TransposeList(inputsT);
-            for (int i = 0; i < retransposed.Length; i++)
+            for (int x = 0; x < retransposed.Length; x++)
             {
-                dataset[i].input = retransposed[i];
+                dataset[x].input = retransposed[x];
             }
             return dataset;
         }
     }
-    public class Mean
+    public class MEAN
     {
         public SCALER[] scalers;
-        Transposer transposer = new Transposer();
-
         public MMODEL[] Get(MMODEL[] dataset)
         {
             void Calc(SCALER scaler, double[] input)
             {
-                for (int i = 0; i < input.Length; i++)
+                for (int x = 0; x < input.Length; x++)
                 {
-                    input[i] = (input[i] - scaler.m) / (scaler.max - scaler.min);
+                    input[x] = (input[x] - scaler.m) / (scaler.max - scaler.min);
                 }
             }
-            double[][] inputs = new double[dataset.Length][];
-            for (int i = 0; i < dataset.Length; i++)
-            {
-                inputs[i] = dataset[i].input;
-            }
 
+            Transposer transposer = new Transposer();
+
+            double[][] inputs = dataset.Select(x => x.input).ToArray();
             double[][] inputsT = transposer.TransposeList(inputs);
+
+            //Collect Scalers
             scalers = new SCALER[inputsT.Length];
-            for (int i = 0; i < inputsT.Length; i++)
+            for (int x = 0; x < inputsT.Length; x++)
             {
                 SCALER scaler = new SCALER();
-                scaler.type = "mean";
-                scaler.min = inputsT[i].Min();
-                scaler.max = inputsT[i].Max();
-                scaler.m = inputs[i].Average();
-                scalers[i] = scaler;
-                Calc(scaler, inputsT[i]);
+                scaler.type = "minmax";
+                scaler.m = inputs[x].Average();
+                scaler.min = inputsT[x].Min();
+                scaler.max = inputsT[x].Max();
+                scalers[x] = scaler;
+
+                //Do calculations based on inputsT[x];
+                Calc(scaler, inputsT[x]);
             }
             double[][] retransposed = transposer.TransposeList(inputsT);
-            for (int i = 0; i < retransposed.Length; i++)
+            for (int x = 0; x < retransposed.Length; x++)
             {
-                dataset[i].input = retransposed[i];
+                dataset[x].input = retransposed[x];
             }
             return dataset;
         }
     }
-    public class ZScore
+    public class ZSCORE
     {
         public SCALER[] scalers;
-        Transposer transposer = new Transposer();
-
         public MMODEL[] Get(MMODEL[] dataset)
         {
             void Calc(SCALER scaler, double[] input)
             {
-                for (int i = 0; i < input.Length; i++)
+                for (int x = 0; x < input.Length; x++)
                 {
-                    input[i] = (input[i] - scaler.m) / scaler.s;
+                    input[x] = (input[x] - scaler.m) / scaler.s;
                 }
             }
-            double[][] inputs = new double[dataset.Length][];
-            for (int i = 0; i < dataset.Length; i++)
-            {
-                inputs[i] = dataset[i].input;
-            }
 
+            Transposer transposer = new Transposer();
+
+            double[][] inputs = dataset.Select(x => x.input).ToArray();
             double[][] inputsT = transposer.TransposeList(inputs);
+
+            //Collect Scalers
             scalers = new SCALER[inputsT.Length];
-            for (int i = 0; i < inputsT.Length; i++)
+            for (int x = 0; x < inputsT.Length; x++)
             {
                 SCALER scaler = new SCALER();
-                scaler.type = "zscore";
-                scaler.m = inputs[i].Average();
-                
-                Calc(scaler, inputsT[i]);
+                scaler.type = "minmax";
+                scaler.m = inputs[x].Average();
+                double[] s_tmps = new double[inputsT[x].Length];
+                double[] inps = inputsT[x];
+                for(int z= 0; z< inps.Length; z++)
+                {
+                    s_tmps[z] = Math.Pow(inps[z] - scaler.m, 2) / (inps.Length - 1);
+                }
+                scaler.s = Math.Sqrt(s_tmps.Sum());
+                scalers[x] = scaler;
+
+                //Do calculations based on inputsT[x];
+                Calc(scaler, inputsT[x]);
             }
             double[][] retransposed = transposer.TransposeList(inputsT);
-            for (int i = 0; i < retransposed.Length; i++)
+            for (int x = 0; x < retransposed.Length; x++)
             {
-                dataset[i].input = retransposed[i];
+                dataset[x].input = retransposed[x];
             }
             return dataset;
         }
