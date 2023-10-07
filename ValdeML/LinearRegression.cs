@@ -1,7 +1,7 @@
 ﻿using System;
 namespace ValdeML
 {
-	public class LRS : iML
+	public class LRS : iLRSF
 	{
 		public double Predict(Grad grad, double input)
 		{
@@ -103,8 +103,8 @@ namespace ValdeML
 			}
 		}
     }
-	public class LRM : iML
-	{
+	public class LRM : iLRMF
+    {
         public double Predict(Grad grad, double[] input)
         {
             double[] feature_calcs = new double[input.Length];
@@ -160,7 +160,7 @@ namespace ValdeML
 			}
 			return errors;
         }
-        private double[] Predictions(Grad grad, double[][] inputs)
+        public double[] Predictions(Grad grad, double[][] inputs)
 		{
 			double[] predictions = new double[inputs.Length];
 			for(int i= 0; i< inputs.Length; i++)
@@ -226,5 +226,6 @@ namespace ValdeML
 			}
 		}
 	}
+
 }
 

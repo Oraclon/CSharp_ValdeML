@@ -34,6 +34,7 @@ namespace ValdeML
 		internal int bid { get; set; }
 		internal int fid { get; set; }
 		internal double[] preds { get; set; }
+		internal double[] pred_activations { get; set; }
 		internal double[] errors { get; set; }
 		internal double[] derivs { get; set; }
 		internal double[] input_derivs { get; set; }
