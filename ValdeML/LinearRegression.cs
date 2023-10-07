@@ -7,7 +7,7 @@ namespace ValdeML
         public double OptimizeB(Grad grad)
         {
 			Bopt bop = grad.bop;
-			double old_vdb = grad.b1 * bop.vdb + (1 - grad.b) * grad.GetJB();
+			double old_vdb = grad.b1 * bop.vdb + (1 - grad.b1) * grad.GetJB();
 			bop.vdb = old_vdb;
 			return bop.vdb;
         }
@@ -79,10 +79,14 @@ namespace ValdeML
 						grad.input_derivs = InputDerivatives(grad, inputs);
 
 						double tmp_w = grad.w - grad.a * grad.GetJW();
+						//double tmp_w = grad.w - grad.a * OptimizeW(grad);
 						grad.w = tmp_w;
 
 						double tmp_b = grad.b - grad.a * grad.GetJB();
+						//double tmp_b = grad.b - grad.a * OptimizeB(grad);
 						grad.b = tmp_b;
+
+						grad.GetError();
 
 						if (grad.error <= Math.Pow(10, -4))
 							break;
@@ -167,6 +171,7 @@ namespace ValdeML
 			}
 			return predictions;
 		}
+		
 		public void Train(Grad grad, MMODEL[][] batches)
 		{
 			Transposer transposer = new Transposer();
