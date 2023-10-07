@@ -20,7 +20,7 @@ namespace ValdeML
     }
     public class Batches
     {
-        public MMODEL[][] Get(MMODEL[] dataset, int batchsize, double splitvar)
+        public MMODEL[][] Get(MMODEL[] dataset, int batchsize)
         {
             int totalbatches = dataset.Length / batchsize;
             MMODEL[][] batches= new MMODEL[totalbatches][];

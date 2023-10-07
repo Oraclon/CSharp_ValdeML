@@ -1,0 +1,15 @@
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\bin\Debug\net6.0\ValdeML.exe
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\bin\Debug\net6.0\ValdeML.deps.json
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\bin\Debug\net6.0\ValdeML.runtimeconfig.json
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\bin\Debug\net6.0\ValdeML.dll
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\bin\Debug\net6.0\ValdeML.pdb
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.csproj.AssemblyReference.cache
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.AssemblyInfoInputs.cache
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.AssemblyInfo.cs
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.csproj.CoreCompileInputs.cache
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.dll
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\refint\ValdeML.dll
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.pdb
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ValdeML.genruntimeconfig.cache
+C:\Users\Raphael\Documents\GitHub\CSharp_ValdeML\ValdeML\obj\Debug\net6.0\ref\ValdeML.dll

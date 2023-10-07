@@ -24,9 +24,13 @@ namespace ValdeML
 		internal Bopt[] bops { get; set; }
 		internal double b1 = 0.9;
 		internal double b2 = 0.999;
+		internal int d { get; set; }
+		internal double e = Math.Pow(10, -8);
 		//Training Vars
 		internal double a = 0.4;
 		internal int epoch = 0;
+		internal double error = 0;
+		internal bool keep_training = true;
 		internal int bid { get; set; }
 		internal int fid { get; set; }
 		internal double[] preds { get; set; }
@@ -55,6 +59,21 @@ namespace ValdeML
 				ws[x] = random.NextDouble() - .5;
 				wops[x] = new Wopt();
 			}
+		}
+		internal void GetError()
+		{
+			error = errors.Sum();
+		}
+		internal double[] ScaleInput(double[] input)
+		{
+			double[] new_input = new double[input.Length];
+			for(int i= 0; i< input.Length; i++)
+			{
+				SCALER scaler = scalers[i];
+				if (scaler.type == "zscore")
+					new_input[i] = (input[i] - scaler.m) / scaler.s;
+			}
+			return new_input;
 		}
 	}
 }
