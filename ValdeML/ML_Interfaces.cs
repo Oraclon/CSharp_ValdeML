@@ -39,14 +39,14 @@ namespace ValdeML
 	{
 		void Train(Grad grad, SMODEL[][] batches);
 		double[] Predictions(Grad grad, double[] inputs);
-		double[] Prediction(Grad grad, double input);
+		double Prediction(Grad grad, double input);
 	}
     //Binary Classification Multiple Features.
     public interface iBCMG: iBC
 	{
 		void Train(Grad grad, MMODEL[][] batches);
 		double[] Predictions(Grad grad, double[][] inputs);
-		double[] Prediction(Grad grad, double[] inputs);
+		double Prediction(Grad grad, double[] inputs);
 	}
 }
 

@@ -71,20 +71,23 @@ namespace ValdeML
         public void Build(int datasetsize, int batchsize, double multiplier, string scale_method)
         {
             int bid = 0;
+            Random random = new Random();
             dataset = new SMODEL[datasetsize];
-            for (int i = 0; i < datasetsize; i++)
             //for(int i = 0; i< datasetsize; i+=5)
+            for (int i = 0; i < datasetsize; i++)
             {
                 int x = i + 1;
+                int zz = random.Next()/ 100000;
                 SMODEL model = new SMODEL();
                 model.input = x;
-                if( x % 12== 0 )
+                //model.input = zz;
+                if ( model.input >= (datasetsize / 2) )
                 {
-                    model.target = 1;
+                    model.target = 0;
                 }
                 else
                 {
-                    model.target = 0;
+                    model.target = 1;
                 }
                 //model.target = x * multiplier;
                 dataset[i] = model;
