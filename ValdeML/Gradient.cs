@@ -34,8 +34,8 @@ namespace ValdeML
 		internal double[] derivs { get; set; }
 		internal double[] input_derivs { get; set; }
 		//Dataset Vars
-		internal SCALER holder { get; set; }
-		internal SCALER[] holders { get; set; }
+		internal SCALER scaler { get; set; }
+		internal SCALER[] scalers { get; set; }
 		//Gradient Voids
 		internal double GetJW()
 		{

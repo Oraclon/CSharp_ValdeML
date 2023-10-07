@@ -1,22 +1,23 @@
 ﻿using System;
 namespace ValdeML
 {
-    class SCALER
+    public class SCALER
     {
+        internal string type { get; set; }
         internal double m { get; set; }
         internal double s { get; set; }
         internal double min { get; set; }
         internal double max { get; set; }
     }
-    class SMODEL
+    public class SMODEL
     {
         internal double input { get; set; }
         internal double target { get; set; }
     }
-    class MMODEL
+    public class MMODEL
     {
-        internal double[] input { get; set; }
-        internal double[] target { get; set; }
+        internal double[] input;
+        internal double target;
     }
 }
 
