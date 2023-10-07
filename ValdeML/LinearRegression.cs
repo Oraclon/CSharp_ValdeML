@@ -3,6 +3,10 @@ namespace ValdeML
 {
 	public class LRS : iML
 	{
+		public double Predict(Grad grad, double input)
+		{
+			return grad.w * input + grad.b;
+		}
 		//Experimental Optimizers.
         public double OptimizeB(Grad grad)
         {
@@ -101,8 +105,17 @@ namespace ValdeML
     }
 	public class LRM : iML
 	{
-		//Experimental Optimizers.
-		public double OptimizeB(Grad grad)
+        public double Predict(Grad grad, double[] input)
+        {
+            double[] feature_calcs = new double[input.Length];
+            for (int i = 0; i < input.Length; i++)
+            {
+                feature_calcs[i] = grad.ws[i] * input[i];
+            }
+            return feature_calcs.Sum() + grad.b;
+        }
+        //Experimental Optimizers.
+        public double OptimizeB(Grad grad)
 		{
 			Bopt bop = grad.bop;
 			double old_vdb = grad.b1 * bop.vdb + (1 - grad.b1) * grad.GetJB();
@@ -117,15 +130,6 @@ namespace ValdeML
             return wop.vdw;
 		}
 		//Experimental Optimizers.
-		public double Predict(Grad grad, double[] input)
-		{
-			double[] feature_calcs = new double[input.Length];
-			for(int i= 0; i< input.Length; i++)
-			{
-				feature_calcs[i] = grad.ws[i] * input[i];
-			}
-			return feature_calcs.Sum() + grad.b;
-		}
         public double[] InputDerivatives(Grad grad, double[] inputs)
         {
 			double[] input_derivatives = new double[inputs.Length];

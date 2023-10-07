@@ -37,6 +37,7 @@ namespace ValdeML
 		internal double[] errors { get; set; }
 		internal double[] derivs { get; set; }
 		internal double[] input_derivs { get; set; }
+		internal double[] pred_derivs { get; set; }
 		//Dataset Vars
 		internal SCALER scaler { get; set; }
 		internal SCALER[] scalers { get; set; }
@@ -64,7 +65,7 @@ namespace ValdeML
 		{
 			error = errors.Sum();
 		}
-		internal double[] ScaleInput(double[] input)
+		internal double[] MScaleInput(double[] input)
 		{
 			double[] new_input = new double[input.Length];
 			for(int i= 0; i< input.Length; i++)
@@ -78,6 +79,22 @@ namespace ValdeML
                     new_input[i] = (input[i] - scaler.m) / scaler.s;
             }
 			return new_input;
+		}
+		internal double SScaleInput(double input)
+		{
+			double scaled= 0.0;
+			if (scaler.type == "minmax")
+				scaled = (input - scaler.min) / (scaler.max - scaler.min);
+			else if (scaler.type == "mean")
+				scaled = (input - scaler.m) / (scaler.max - scaler.min);
+			else if (scaler.type == "zscore")
+				scaled = (input - scaler.m) / scaler.s;
+			else if (scaler.type == "maxsin")
+				scaled = Math.Sin(((2 * Math.PI) * input) / scaler.max);
+			else if (scaler.type == "maxcos")
+                scaled = Math.Cos(((2 * Math.PI) * input) / scaler.max);
+
+            return scaled;
 		}
 	}
 }
