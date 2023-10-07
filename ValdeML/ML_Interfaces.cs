@@ -12,7 +12,7 @@ namespace ValdeML
 	public interface iScaler
 	{
 		MMODEL[] Get(MMODEL[] dataset);
-		SCALER[] GetScalers(double[][] inputs);
+		SCALER[] GetScalers(double[][] inputs, string type);
 		MMODEL[] Calc(MMODEL[] dataset, double[][] inputs);
 	}
 }

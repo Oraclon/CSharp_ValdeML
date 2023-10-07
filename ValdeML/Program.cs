@@ -21,7 +21,7 @@ namespace ValdeML
 
             
             Grad grad = new Grad();
-            ZSCORE scaled = new ZSCORE();
+            MEAN scaled = new MEAN();
             dataset = scaled.Get(dataset);
             dataset = dataset.OrderBy(_ => random.Next()).ToArray();
             grad.scalers = scaled.scalers;

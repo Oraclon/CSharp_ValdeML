@@ -70,9 +70,13 @@ namespace ValdeML
 			for(int i= 0; i< input.Length; i++)
 			{
 				SCALER scaler = scalers[i];
-				if (scaler.type == "zscore")
-					new_input[i] = (input[i] - scaler.m) / scaler.s;
-			}
+				if (scaler.type == "minmax")
+					new_input[i] = (input[i] - scaler.min) / (scaler.max - scaler.min);
+				else if (scaler.type == "mean")
+					new_input[i] = (input[i] - scaler.m) / (scaler.max - scaler.min);
+                else if (scaler.type == "zscore")
+                    new_input[i] = (input[i] - scaler.m) / scaler.s;
+            }
 			return new_input;
 		}
 	}
