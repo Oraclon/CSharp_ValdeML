@@ -68,6 +68,7 @@ namespace ValdeML
 		{
 			while (grad.error >= 0)
 			{
+				grad.epoch++;
 				if (grad.keep_training)
 				{
 					for(grad.bid= 0; grad.bid< batches.Length; grad.bid++)

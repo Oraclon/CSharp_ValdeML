@@ -72,12 +72,21 @@ namespace ValdeML
         {
             int bid = 0;
             dataset = new SMODEL[datasetsize];
-            for(int i = 0; i< datasetsize; i++)
+            for (int i = 0; i < datasetsize; i++)
+            //for(int i = 0; i< datasetsize; i+=5)
             {
                 int x = i + 1;
                 SMODEL model = new SMODEL();
                 model.input = x;
-                model.target = x * multiplier;
+                if( x % 12== 0 )
+                {
+                    model.target = 1;
+                }
+                else
+                {
+                    model.target = 0;
+                }
+                //model.target = x * multiplier;
                 dataset[i] = model;
             }
             double[] inputs = dataset.Select(x => x.input).ToArray();

@@ -7,16 +7,16 @@ namespace ValdeML
         static void Main(string[] args)
         {
             DatasetOneFeature dataset = new DatasetOneFeature();
-            dataset.Build(1000000,  512, 2, "mean");
+            dataset.Build(1000000,  128, 2, "mean");
 
             Grad grad = new Grad();
             grad.scaler= dataset.scaler;
             grad.a = .4;
-            LRS lrs = new LRS();
+            BCS lrs = new BCS();
             lrs.Train(grad, dataset.batches);
             int testint = 123400;
-            double test_input = grad.SScaleInput(testint);
-            double prediction = lrs.Predict(grad, test_input);
+            //double test_input = grad.SScaleInput(testint);
+            //double prediction = lrs.Predict(grad, test_input);
 
 
             //LRM lrm = new LRM();

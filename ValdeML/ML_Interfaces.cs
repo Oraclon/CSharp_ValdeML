@@ -32,7 +32,6 @@ namespace ValdeML
     }
 	public interface iBC: iML
 	{
-		double[] PredictionsDerivatives(Grad grad);
 		double SigmoidActivation(double prediction);
 	}
 	//Binary Classification Single Feature.
