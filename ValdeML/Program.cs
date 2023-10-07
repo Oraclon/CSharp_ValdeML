@@ -6,34 +6,19 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-            Transposer transposer = new Transposer();
-            Random random = new Random();
-            int s = 5000;
-            MMODEL[] dataset = new MMODEL[s];
-            for(int i = 0; i< s; i++)
-            {
-                int x = i + 1;
-                MMODEL model = new MMODEL();
-                model.input = new double[] { x * 100, x * 10 };
-                model.target = x * 2;
-                dataset[i] = model;
-            }
+            DatasetMultFeatures dataset = new DatasetMultFeatures();
+            dataset.Build(100000, 128, 1000, "mean");
 
-            
             Grad grad = new Grad();
-            MEAN scaled = new MEAN();
-            dataset = scaled.Get(dataset);
-            dataset = dataset.OrderBy(_ => random.Next()).ToArray();
-            grad.scalers = scaled.scalers;
-            MMODEL[][] batches = new Batches().Get(dataset, 512);
-            
+            grad.scalers = dataset.scalers;
+            grad.UpdateW(dataset.dataset[0].input);
+            grad.a = .4;
+
             LRM lrm = new LRM();
-            grad.a = 0.2;
-            grad.UpdateW(dataset[0].input);
-            lrm.Train(grad, batches);
+            lrm.Train(grad, dataset.batches);
             int testint = 1000000;
             double[] testinp = grad.ScaleInput(new double[] { testint * 100, testint * 10 });
-            double prediction= lrm.Predict(grad, testinp);
+            double prediction = lrm.Predict(grad, testinp);
         }
     }
 }
