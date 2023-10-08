@@ -141,6 +141,7 @@ namespace ValdeML
         }
         public MMODEL[] Calc(MMODEL[] dataset, double[][] inputs)
         {
+            Random r = new Random();
             double[][] scaled_lst = new double[inputs.Length][];
             for(int i= 0; i< inputs.Length; i++)
             {
@@ -158,6 +159,7 @@ namespace ValdeML
             {
                 dataset[i].input = retransposed[i];
             }
+            dataset.OrderBy(_ => r.Next()).ToArray();
             return dataset;
         }
     }
