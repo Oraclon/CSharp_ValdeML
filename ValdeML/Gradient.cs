@@ -45,11 +45,13 @@ namespace ValdeML
 		//Gradient Voids
 		internal double GetJW()
 		{
-			return input_derivs.Sum();
+			int size = input_derivs.Length;
+			return input_derivs.Sum() / size;
 		}
 		internal double GetJB()
 		{
-			return derivs.Sum();
+			int size = derivs.Length;
+			return derivs.Sum() / size;
 		}
 		internal void UpdateW(double[] input)
 		{
