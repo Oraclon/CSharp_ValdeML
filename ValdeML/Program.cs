@@ -27,8 +27,8 @@ namespace ValdeML
                     dataset[i] = model;
                 }
             }
-            dataset = new MEAN().Get(dataset);
-            MMODEL[][] batches = new Batches().Get(dataset, 128);
+            dataset = new ZSCORE().Get(dataset);
+            MMODEL[][] batches = new Batches().Get(dataset, 64);
             Grad grad = new Grad();
             grad.a = .4;
             BCM bcm = new BCM();
