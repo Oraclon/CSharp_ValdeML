@@ -11,7 +11,7 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-            string path = "/Users/angularnodedeveloper/Documents/datasets/citrus.csv";
+            string path = @"C:\Users\Raphael\Desktop\datasets\citrus.csv";
             StreamReader reader = new StreamReader(path);
             string[] lines = reader.ReadToEnd().Split("\n").Skip(1).ToArray();
 
@@ -23,12 +23,11 @@ namespace ValdeML
                     MMODEL model = new MMODEL();
                     string[] str_lines = lines[i].Split(",");
                     model.input = str_lines.Skip(1).Select(x => Convert.ToDouble(x)).ToArray();
-                    model.target= (int)(Fruit)Enum.Parse(typeof(Fruit), str_lines[0]);
+                    model.target = (int)(Fruit)Enum.Parse(typeof(Fruit), str_lines[0]);
                     dataset[i] = model;
                 }
             }
-
-            dataset = new ZSCORE().Get(dataset);
+            dataset = new MEAN().Get(dataset);
             MMODEL[][] batches = new Batches().Get(dataset, 128);
             Grad grad = new Grad();
             grad.a = .4;
