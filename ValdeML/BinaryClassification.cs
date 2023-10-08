@@ -8,7 +8,7 @@ namespace ValdeML
 {
     internal class BCS : iBCSF
     {
-        public double Prediction(Grad grad, double input)
+        public double Predict(Grad grad, double input)
         {
             double prediction = grad.w * input + grad.b;
             double activation = SigmoidActivation(prediction);
@@ -125,6 +125,122 @@ namespace ValdeML
                         if (grad.error <= Math.Pow(10, -3))
                             grad.keep_training = !grad.keep_training;
                     }
+                }
+                else
+                    break;
+            }
+        }
+    }
+    internal class BCM : iBCMF
+    {
+        public double Predict(Grad grad, double[] inputs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double OptimizeB(Grad grad)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double OptimizeW(Grad grad)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double[] InputDerivatives(Grad grad, double[] inputs)
+        {
+            double[] input_derivs = new double[inputs.Length];
+            input_derivs = grad.MultiplyElements(grad.derivs, inputs);
+            return input_derivs;
+        }
+        
+        public double[] ErrorDerivatives(Grad grad, double[] targets)
+        {
+            double[] error_derivatives = new double[targets.Length];
+            double[] pred_derivatives = new double[targets.Length];
+            double[] derivatives = new double[targets.Length];
+            //Get Error Derivatives
+            for(int i = 0; i < targets.Length; i++)
+            {
+                double error_derivative = 2 * (grad.preds[i] - targets[i]);
+                error_derivatives[i] = error_derivative;
+            }
+            //Get Prediction Derivatives based on Sigmoid Activation
+            for(int i = 0; i < targets.Length; i++)
+            {
+                double pred_derivative = grad.preds[i] * (1 - grad.preds[i]);
+                pred_derivatives[i] = pred_derivative;
+            }
+            derivatives = grad.MultiplyElements(error_derivatives, pred_derivatives);
+            return derivatives;
+        }
+
+        public double[] Errors(Grad grad, double[] targets)
+        {
+            double[] errors = new double[targets.Length];
+            for(int i = 0; i < targets.Length; i++)
+            {
+                double error = Math.Pow(grad.preds[i] - targets[i], 2) / (2 * targets.Length);
+                errors[i] = error;
+            }
+            return errors;
+        }
+
+        public double SigmoidActivation(double prediction)
+        {
+            return 1.0 / (1 + Math.Exp(-1.0 * prediction));
+        }
+        
+        public double[] Predictions(Grad grad, double[][] inputs)
+        {
+            double[] predictions = new double[inputs.Length];
+            for(int i = 0; i < inputs.Length; i++)
+            {
+                double[] feature_calcs = grad.MultiplyElements(grad.ws, inputs[i]);
+                double prediction = feature_calcs.Sum() + grad.b;
+                double activation = SigmoidActivation(prediction);
+                predictions[i] = activation;
+            }
+            return predictions;
+        }
+
+        public void Train(Grad grad, MMODEL[][] batches)
+        {
+            Transposer transposer = new Transposer();
+            grad.UpdateW(batches[0][0].input);
+            while(grad.error >= 0)
+            {
+                if (grad.keep_training)
+                { 
+                    for(grad.bid = 0; grad.bid < batches.Length; grad.bid++)
+                    {
+                        MMODEL[] batch = batches[grad.bid];
+                        double[][] inputs = batch.Select(x => x.input).ToArray();
+                        double[] targets = batch.Select(x => x.target).ToArray();
+                        grad.d = batch.Length;
+
+                        grad.preds = Predictions(grad, inputs);
+                        grad.errors = Errors(grad, targets);
+                        grad.derivs = ErrorDerivatives(grad, targets);
+
+                        double[][] inputsT = transposer.TransposeList(inputs);
+                        for(grad.fid = 0; grad.fid < inputsT.Length; grad.fid ++)
+                        {
+                            grad.input_derivs = InputDerivatives(grad, inputsT[grad.fid]);
+
+                            double tmp_w = grad.ws[grad.fid] - grad.a * grad.GetJW();
+                            grad.ws[grad.fid] = tmp_w;
+                        }
+
+                        double tmp_b = grad.b - grad.a * grad.GetJB();
+                        grad.b = tmp_b;
+
+                        if (grad.error <= Math.Pow(10, -3))
+                            break;
+                    }
+                    if (grad.error <= Math.Pow(10, -3))
+                        break;
                 }
                 else
                     break;
