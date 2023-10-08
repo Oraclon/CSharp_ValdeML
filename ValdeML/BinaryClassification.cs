@@ -135,7 +135,9 @@ namespace ValdeML
     {
         public double Predict(Grad grad, double[] inputs)
         {
-            throw new NotImplementedException();
+            double[] feature_preds = grad.MultiplyElements(grad.ws, inputs, -1);
+            double prediction= feature_preds.Sum() + grad.b;
+            return SigmoidActivation(prediction);
         }
 
         public double OptimizeB(Grad grad)
@@ -151,29 +153,13 @@ namespace ValdeML
         public double[] InputDerivatives(Grad grad, double[] inputs)
         {
             double[] input_derivs = new double[inputs.Length];
-            input_derivs = grad.MultiplyElements(grad.derivs, inputs);
+            input_derivs = grad.MultiplyElements(grad.derivs, inputs, -1);
             return input_derivs;
         }
         
         public double[] ErrorDerivatives(Grad grad, double[] targets)
         {
-            double[] error_derivatives = new double[targets.Length];
-            double[] pred_derivatives = new double[targets.Length];
             double[] derivatives = new double[targets.Length];
-            //Get Error Derivatives
-            for(int i = 0; i < targets.Length; i++)
-            {
-                double error_derivative = 2 * (grad.preds[i] - targets[i]);
-                error_derivatives[i] = error_derivative;
-            }
-            //Get Prediction Derivatives based on Sigmoid Activation
-            for(int i = 0; i < targets.Length; i++)
-            {
-                double pred_derivative = grad.preds[i] * (1 - grad.preds[i]);
-                pred_derivatives[i] = pred_derivative;
-            }
-            derivatives = grad.MultiplyElements(error_derivatives, pred_derivatives);
-            return derivatives;
         }
 
         public double[] Errors(Grad grad, double[] targets)
@@ -181,7 +167,9 @@ namespace ValdeML
             double[] errors = new double[targets.Length];
             for(int i = 0; i < targets.Length; i++)
             {
-                double error = Math.Pow(grad.preds[i] - targets[i], 2) / (2 * targets.Length);
+                double prediction = grad.preds[i];
+                double target = targets[i];
+                double error = -target * Math.Log(prediction) - (1 - target) * Math.Log(1 - prediction);
                 errors[i] = error;
             }
             return errors;
@@ -197,7 +185,7 @@ namespace ValdeML
             double[] predictions = new double[inputs.Length];
             for(int i = 0; i < inputs.Length; i++)
             {
-                double[] feature_calcs = grad.MultiplyElements(grad.ws, inputs[i]);
+                double[] feature_calcs = grad.MultiplyElements(grad.ws, inputs[i], -1);
                 double prediction = feature_calcs.Sum() + grad.b;
                 double activation = SigmoidActivation(prediction);
                 predictions[i] = activation;
@@ -236,10 +224,12 @@ namespace ValdeML
                         double tmp_b = grad.b - grad.a * grad.GetJB();
                         grad.b = tmp_b;
 
-                        if (grad.error <= Math.Pow(10, -3))
+                        grad.GetError();
+
+                        if (grad.error <= Math.Pow(10, -4))
                             break;
                     }
-                    if (grad.error <= Math.Pow(10, -3))
+                    if (grad.error <= Math.Pow(10, -4))
                         break;
                 }
                 else

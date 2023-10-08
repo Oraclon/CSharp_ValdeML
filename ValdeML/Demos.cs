@@ -7,15 +7,20 @@ namespace ValdeML
         public SCALER[] scalers;
         public MMODEL[] dataset;
         public MMODEL[][] batches;
-        public void Build(int datasetsize, int batchsize, double multiplier, string scale_method)
+        public void Build(int datasetsize, int batchsize, double multiplier, string scale_method, bool isbinary)
         {
             dataset = new MMODEL[datasetsize];
             for(int i = 0; i< datasetsize; i++)
             {
-                int x = i + 1;
+                int actual = i + 1;
                 MMODEL model = new MMODEL();
-                model.input = new double[] { x * 100, x * 10 };
-                model.target = x * multiplier;
+                model.input = new double[] { actual * 100, actual * 10 };
+
+                if (!isbinary)
+                    model.target = actual * multiplier;
+                else
+                    model.target = actual >= (datasetsize / multiplier) ? 1 : 0;
+
                 dataset[i] = model;
             }
             if (scale_method == "minmax")
@@ -68,28 +73,23 @@ namespace ValdeML
             }
             return Math.Sqrt(s_calcs.Sum());
         }
-        public void Build(int datasetsize, int batchsize, double multiplier, string scale_method)
+        public void Build(int datasetsize, int batchsize, double multiplier, string scale_method, bool isbinary)
         {
             int bid = 0;
             Random random = new Random();
             dataset = new SMODEL[datasetsize];
-            //for(int i = 0; i< datasetsize; i+=5)
             for (int i = 0; i < datasetsize; i++)
             {
-                int x = i + 1;
-                int zz = random.Next()/ 100000;
+                int actual = i + 1;
+                
                 SMODEL model = new SMODEL();
-                model.input = x;
-                //model.input = zz;
-                if ( model.input >= (datasetsize / 2) )
-                {
-                    model.target = 0;
-                }
+                model.input = actual;
+
+                if (!isbinary)
+                    model.target = actual * multiplier;
                 else
-                {
-                    model.target = 1;
-                }
-                //model.target = x * multiplier;
+                    model.target = actual >= (datasetsize / multiplier) ? 1 : 0;
+
                 dataset[i] = model;
             }
             double[] inputs = dataset.Select(x => x.input).ToArray();

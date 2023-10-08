@@ -97,13 +97,17 @@ namespace ValdeML
 
             return scaled;
 		}
-		internal double[] MultiplyElements(double[] elementslst1, double[] elementslst2)
+		internal double[] MultiplyElements(double[] elementslst1, double[] elementslst2, int division)
 		{
 			double[] result = new double[elementslst1.Length];
 			for(int i = 0; i < elementslst1.Length; i++)
 			{
-				double mult = elementslst1[i] * elementslst2[i];
-				result[i] = mult;
+				double mult = 0.0;
+				if(!division.Equals(-1))
+					mult = (elementslst1[i] * elementslst2[i])/ division;
+				else
+                    mult = elementslst1[i] * elementslst2[i];
+                result[i] = mult;
 			}
 			return result;
 		}
