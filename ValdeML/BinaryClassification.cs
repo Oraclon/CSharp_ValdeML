@@ -134,48 +134,52 @@ namespace ValdeML
     }
     internal class BCM : iBCMF
     {
-        void CalcError(Grad grad)
-        {
-            double m = grad.errors.Length;
-            //grad.error = 1 / m * grad.errors.Sum();
-            grad.error = grad.errors.Sum() / m;
-        }
-        double CalcJW(Grad grad)
-        {
-            double[] inp_derivs = grad.input_derivs;
-            int m = inp_derivs.Length;
-            //return 1 / m * inp_derivs.Sum();
-            return inp_derivs.Sum() / m;
-        }
-        double CalcJB(Grad grad)
-        {
-            double[] derivs = grad.derivs;
-            int m = derivs.Length;
-            //return 1 / m * derivs.Sum();
-            return derivs.Sum() / m;
-        }
-        
         public double Predict(Grad grad, double[] inputs)
         {
             int size = inputs.Length;
-            double[] feat_calcs = new double[size];
+            double[] feat_preds = new double[size];
             for (int i = 0; i < size; i++)
             {
-                double feat_calc = grad.ws[i] * inputs[i];
-                feat_calcs[i] = feat_calc;
+                feat_preds[i] = grad.ws[i] * inputs[i];
             }
-            double prediction = feat_calcs.Sum() + grad.b;
-            return SigmoidActivation(prediction);
-        }
-
-        public double OptimizeW(Grad grad)
-        {
-            throw new NotImplementedException();
+            double pred = feat_preds.Sum() + grad.b;
+            return SigmoidActivation(pred);
         }
 
         public double OptimizeB(Grad grad)
         {
-            throw new NotImplementedException();
+            Bopt bop = grad.bop;
+            double old_vdb = grad.b1 * bop.vdb + (1 - grad.b1) * CalcJB(grad);
+            bop.vdb = old_vdb;
+            return bop.vdb;
+        }
+        public double OptimizeW(Grad grad)
+        {
+            Wopt wop = grad.wops[grad.fid];
+            double old_vdw = grad.b1 * wop.vdw + (1 - grad.b1) * CalcJW(grad);
+            wop.vdw = old_vdw;
+            return wop.vdw;
+        }
+
+        double CalcJW(Grad grad)
+        {
+            double[] input_derivs = grad.input_derivs;
+            int size = input_derivs.Length;
+            return input_derivs.Sum() / size;
+            //return input_derivs.Sum() ;
+        }
+        double CalcJB(Grad grad)
+        {
+            double[] derivs = grad.derivs;
+            int size = derivs.Length;
+            return derivs.Sum() / size;
+            //return derivs.Sum() ;
+        }
+        void CalcError(Grad grad)
+        {
+            double[] errors = grad.errors;
+            int size = errors.Length;
+            grad.error = errors.Sum() / size;
         }
 
         public double[] InputDerivatives(Grad grad, double[] inputs)
@@ -189,21 +193,21 @@ namespace ValdeML
             }
             return input_derivs;
         }
-
         public double[] ErrorDerivatives(Grad grad, double[] targets)
         {
             int size = targets.Length;
             double[] error_derivatives = new double[size];
             for (int i = 0; i < size; i++)
             {
+                double error = grad.errors[i];
                 double derivative = grad.preds[i] - targets[i];
-                double activate_der = grad.preds[i] * (1 - grad.preds[i]);
-                double error_derivative = derivative * activate_der;
+                //double derivative = targets[i] == 1 ? -1 / grad.preds[i] : 1 / (1 - grad.preds[i]);
+                double activat_der = grad.preds[i] * (1 - grad.preds[i]);
+                double error_derivative = derivative * activat_der;
                 error_derivatives[i] = error_derivative;
             }
             return error_derivatives;
         }
-
         public double[] Errors(Grad grad, double[] targets)
         {
             int size = targets.Length;
@@ -220,20 +224,20 @@ namespace ValdeML
 
         public double SigmoidActivation(double prediction)
         {
-            return 1.0 / (1 + Math.Exp(-1.0 * prediction));
+            return 1.0 / (1 + Math.Exp(-prediction));
         }
-
         public double[] Predictions(Grad grad, double[][] inputs)
         {
-            int outter = inputs.Length;
-            int inner = inputs[0].Length;
+            int outs = inputs.Length;
+            int inps = inputs[0].Length;
 
-            double[] predictions = new double[outter];
-            for (int i = 0; i < outter; i++)
+            double[] predictions = new double[outs];
+
+            for (int i = 0; i < outs; i++)
             {
-                double[] feat_calcs = new double[inner];
+                double[] feat_calcs = new double[inps];
                 double[] input = inputs[i];
-                for (int j = 0; j < inner; j++)
+                for (int j = 0; j < inps; j++)
                 {
                     double feat_calc = grad.ws[j] * input[j];
                     feat_calcs[j] = feat_calc;
@@ -247,42 +251,51 @@ namespace ValdeML
 
         public void Train(Grad grad, MMODEL[][] batches)
         {
-            Transposer tr = new Transposer();
             grad.UpdateW(batches[0][0].input);
-            while(grad.error >= 0)
+            Transposer tr = new Transposer();
+            while (grad.error >= 0)
             {
                 grad.epoch++;
-                for (grad.bid = 0; grad.bid < batches.Length; grad.bid++)
+                if (grad.keep_training)
                 {
-                    MMODEL[] batch = batches[grad.bid];
-                    double[][] inputs = batch.Select(x => x.input).ToArray();
-                    double[] targets = batch.Select(x => x.target).ToArray();
-                    grad.d = batch.Length;
-
-                    grad.preds = Predictions(grad, inputs);
-                    grad.errors = Errors(grad, targets);
-                    grad.derivs = ErrorDerivatives(grad, targets);
-
-                    double[][] inputsT = tr.TransposeList(inputs);
-
-                    for (grad.fid = 0; grad.fid < inputsT.Length; grad.fid++)
+                    for (grad.bid = 0; grad.bid < batches.Length; grad.bid++)
                     {
-                        double[] inputT = inputsT[grad.fid];
-                        grad.input_derivs = InputDerivatives(grad, inputT);
+                        MMODEL[] batch = batches[grad.bid];
+                        grad.d = batch.Length;
+                        double[][] inputs = batch.Select(x => x.input).ToArray();
+                        double[] targets = batch.Select(x => x.target).ToArray();
 
-                        double tmp_w = grad.ws[grad.fid] - grad.a * CalcJW(grad);
-                        grad.ws[grad.fid] = tmp_w;
+                        grad.preds = Predictions(grad, inputs);
+                        grad.errors = Errors(grad, targets);
+                        grad.derivs = ErrorDerivatives(grad, targets);
+
+                        double[][] inputsT = tr.TransposeList(inputs);
+                        for (grad.fid = 0; grad.fid < inputsT.Length; grad.fid++)
+                        {
+                            double[] inputT = inputsT[grad.fid];
+                            grad.input_derivs = InputDerivatives(grad, inputT);
+
+                            double tmp_w = grad.ws[grad.fid] - grad.a * grad.GetJW();
+                            //double tmp_w = grad.ws[grad.fid] - grad.a * CalcJW(grad);
+                            //double tmp_w = grad.ws[grad.fid] - grad.a * OptimizeW(grad);
+                            grad.ws[grad.fid] = tmp_w;
+                        }
+
+                        double tmp_b = grad.b - grad.a * grad.GetJB();
+                        //double tmp_b = grad.b - grad.a * CalcJB(grad);
+                        //double tmp_b = grad.b - grad.a * OptimizeB(grad);
+                        grad.b = tmp_b;
+
+                        CalcError(grad);
                     }
-
-                    double tmp_b = grad.b - grad.a * CalcJB(grad);
-                    grad.b = tmp_b;
-
-                    CalcError(grad);
+                    if (grad.error <= Math.Pow(10, -2))
+                        break;
                 }
-                if(grad.error<= Math.Pow(10, -3))
+                else
                 {
                     break;
                 }
+                Console.WriteLine(grad.error);
             }
         }
     }
