@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace ValdeML
         public double[] InputDerivatives(Grad grad, double[] inputs)
         {
             double[] input_derivatives = new double[inputs.Length];
-            for(int i= 0; i< inputs.Length; i++)
+            for (int i = 0; i < inputs.Length; i++)
             {
                 double input_derivative = grad.derivs[i] * inputs[i];
                 input_derivatives[i] = input_derivative;
@@ -58,7 +58,7 @@ namespace ValdeML
         public double[] ErrorDerivatives(Grad grad, double[] targets)
         {
             double[] error_derivatives = new double[targets.Length];
-            for(int i= 0; i< targets.Length; i++)
+            for (int i = 0; i < targets.Length; i++)
             {
                 double error_derivative = 2 * (grad.preds[i] - targets[i]);
                 double pred_derivative = grad.preds[i] * (1 - grad.preds[i]);
@@ -71,7 +71,7 @@ namespace ValdeML
         public double[] Errors(Grad grad, double[] targets)
         {
             double[] errors = new double[targets.Length];
-            for(int i = 0; i< targets.Length; i++)
+            for (int i = 0; i < targets.Length; i++)
             {
                 double error = Math.Pow(grad.preds[i] - targets[i], 2) / (2 * targets.Length);
                 errors[i] = error;
@@ -85,7 +85,7 @@ namespace ValdeML
         public double[] Predictions(Grad grad, double[] inputs)
         {
             double[] predictions = new double[inputs.Length];
-            for(int i = 0; i< inputs.Length; i++)
+            for (int i = 0; i < inputs.Length; i++)
             {
                 double prediction = (grad.w * inputs[i]) + grad.b;
                 double activation = SigmoidActivation(prediction);
@@ -95,12 +95,12 @@ namespace ValdeML
         }
         public void Train(Grad grad, SMODEL[][] batches)
         {
-            while(grad.error >= 0)
+            while (grad.error >= 0)
             {
                 grad.epoch++;
                 if (grad.keep_training)
                 {
-                    for(grad.bid= 0; grad.bid< batches.Length; grad.bid++)
+                    for (grad.bid = 0; grad.bid < batches.Length; grad.bid++)
                     {
                         SMODEL[] batch = batches[grad.bid];
                         grad.d = batch.Length;
@@ -204,19 +204,19 @@ namespace ValdeML
             }
             return errors;
         }
-        
+
         public double SigmoidActivation(double prediction)
         {
-            return 1.0 / (1 + Math.Exp(-1.0*prediction));
+            return 1.0 / (1 + Math.Exp(-1.0 * prediction));
         }
         public double[] Predictions(Grad grad, double[][] inputs)
         {
             int outs = inputs.Length;
             int inps = inputs[0].Length;
-            
+
             double[] predictions = new double[outs];
-            
-            for (int i = 0; i < outs; i++) 
+
+            for (int i = 0; i < outs; i++)
             {
                 double[] feat_calcs = new double[inps];
                 double[] input = inputs[i];
@@ -231,15 +231,15 @@ namespace ValdeML
             }
             return predictions;
         }
-        
+
         public void Train(Grad grad, MMODEL[][] batches)
         {
             grad.UpdateW(batches[0][0].input);
             Transposer tr = new Transposer();
-            while(grad.error >= 0)
+            while (grad.error >= 0)
             {
                 grad.epoch++;
-                if(grad.keep_training)
+                if (grad.keep_training)
                 {
                     for (grad.bid = 0; grad.bid < batches.Length; grad.bid++)
                     {
