@@ -6,29 +6,31 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-            DatasetMultFeatures dataset = new DatasetMultFeatures();
-            dataset.Build(1000000,  64, 2, "zscore", true);
-
-            Grad grad = new Grad();
-            grad.a = .2;
-            grad.scalers = dataset.scalers;
-            BCM bcm = new BCM();
-            MMODEL[][] to_train = dataset.batches.Skip(0).Take(dataset.batches.Length - 10).ToArray();
-            MMODEL[][] to_eval = dataset.batches.Skip(dataset.batches.Length - 10).ToArray();
-            bcm.Train(grad, to_train);
-
-            for(int i = 0; i< to_eval.Length; i++)
+            string path = @"C:\Users\Raphael\Documents\Datasets\testbinaryclassific.csv";
+            StreamReader reader = new StreamReader(path);
+            string[] lines = reader.ReadToEnd().Split("\n");
+            
+            MMODEL[] dataset = new MMODEL[lines.Length-1];
+            for(int i = 0; i< lines.Length-1; i++)
             {
-                MMODEL[] batch = to_eval[i];
-                for(int j =0; j< batch.Length; j++)
+                if (!lines[i].Equals(""))
                 {
-                    int prediction = (int)bcm.Predict(grad, batch[j].input);
-                    int tar = (int)batch[j].target;
+                    MMODEL model = new MMODEL();
+                    string[] str_lines = lines[i].Split(",");
+                    double[] line = str_lines.Select(x => Convert.ToDouble(x)).ToArray();
+                    model.input = line.Skip(1).ToArray();
+                    model.target = line[0];
+                    dataset[i] = model;
                 }
             }
 
-            
-            //lrs.Train(grad, to_train);
+            dataset = new ZSCORE().Get(dataset);
+            MMODEL[][] batches = new Batches().Get(dataset, 64);
+
+            Grad grad = new Grad();
+            grad.a = .4;
+            BCM bcm = new BCM();
+            bcm.Train(grad, batches);
         }
     }
 }

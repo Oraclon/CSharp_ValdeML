@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -135,105 +136,143 @@ namespace ValdeML
     {
         public double Predict(Grad grad, double[] inputs)
         {
-            double[] feature_preds = grad.MultiplyElements(grad.ws, inputs, -1);
-            double prediction= feature_preds.Sum() + grad.b;
-            return SigmoidActivation(prediction);
+            throw new NotImplementedException();
         }
 
         public double OptimizeB(Grad grad)
         {
             throw new NotImplementedException();
         }
-
         public double OptimizeW(Grad grad)
         {
             throw new NotImplementedException();
         }
 
-        public double[] InputDerivatives(Grad grad, double[] inputs)
+        double CalcJW(Grad grad)
         {
-            double[] input_derivs = new double[inputs.Length];
-            input_derivs = grad.MultiplyElements(grad.derivs, inputs, -1);
-            return input_derivs;
+            double[] input_derivs = grad.input_derivs;
+            int size = input_derivs.Length;
+            return input_derivs.Sum() / size;
         }
-        
-        public double[] ErrorDerivatives(Grad grad, double[] targets)
+        double CalcJB(Grad grad)
         {
-            double[] derivatives = new double[targets.Length];
+            double[] derivs = grad.derivs;
+            int size = derivs.Length;
+            return derivs.Sum() / size;
+        }
+        void CalcError(Grad grad)
+        {
+            double[] errors = grad.errors;
+            int size = errors.Length;
+            grad.error = errors.Sum() / size;
         }
 
+        public double[] InputDerivatives(Grad grad, double[] inputs)
+        {
+            int size = inputs.Length;
+            double[] input_derivs = new double[size];
+            for (int i = 0; i < size; i++)
+            {
+                double input_deriv = grad.derivs[i] * inputs[i];
+                input_derivs[i] = input_deriv;
+            }
+            return input_derivs;
+        }
+        public double[] ErrorDerivatives(Grad grad, double[] targets)
+        {
+            int size = targets.Length;
+            double[] error_derivatives = new double[size];
+            for (int i = 0; i < size; i++)
+            {
+                double derivative = grad.preds[i] - targets[i];
+                double activat_der = grad.preds[i] * (1 - grad.preds[i]);
+                double error_derivative = derivative * activat_der;
+                error_derivatives[i] = error_derivative;
+            }
+            return error_derivatives;
+        }
         public double[] Errors(Grad grad, double[] targets)
         {
-            double[] errors = new double[targets.Length];
-            for(int i = 0; i < targets.Length; i++)
+            int size = targets.Length;
+            double[] errors = new double[size];
+            for (int i = 0; i < size; i++)
             {
-                double prediction = grad.preds[i];
-                double target = targets[i];
-                double error = -target * Math.Log(prediction) - (1 - target) * Math.Log(1 - prediction);
+                double y = grad.preds[i];
+                double t = targets[i];
+                double error = -t * Math.Log(y) - (1 - t) * Math.Log(1 - y);
                 errors[i] = error;
             }
             return errors;
         }
-
+        
         public double SigmoidActivation(double prediction)
         {
-            return 1.0 / (1 + Math.Exp(-1.0 * prediction));
+            return 1.0 / (1 + Math.Exp(-1.0*prediction));
         }
-        
         public double[] Predictions(Grad grad, double[][] inputs)
         {
-            double[] predictions = new double[inputs.Length];
-            for(int i = 0; i < inputs.Length; i++)
+            int outs = inputs.Length;
+            int inps = inputs[0].Length;
+            
+            double[] predictions = new double[outs];
+            
+            for (int i = 0; i < outs; i++) 
             {
-                double[] feature_calcs = grad.MultiplyElements(grad.ws, inputs[i], -1);
-                double prediction = feature_calcs.Sum() + grad.b;
+                double[] feat_calcs = new double[inps];
+                double[] input = inputs[i];
+                for (int j = 0; j < inps; j++)
+                {
+                    double feat_calc = grad.ws[j] * input[j];
+                    feat_calcs[j] = feat_calc;
+                }
+                double prediction = feat_calcs.Sum() + grad.b;
                 double activation = SigmoidActivation(prediction);
                 predictions[i] = activation;
             }
             return predictions;
         }
-
+        
         public void Train(Grad grad, MMODEL[][] batches)
         {
-            Transposer transposer = new Transposer();
             grad.UpdateW(batches[0][0].input);
+            Transposer tr = new Transposer();
             while(grad.error >= 0)
             {
-                if (grad.keep_training)
-                { 
-                    for(grad.bid = 0; grad.bid < batches.Length; grad.bid++)
+                grad.epoch++;
+                if(grad.keep_training)
+                {
+                    for (grad.bid = 0; grad.bid < batches.Length; grad.bid++)
                     {
                         MMODEL[] batch = batches[grad.bid];
+                        grad.d = batch.Length;
                         double[][] inputs = batch.Select(x => x.input).ToArray();
                         double[] targets = batch.Select(x => x.target).ToArray();
-                        grad.d = batch.Length;
 
                         grad.preds = Predictions(grad, inputs);
                         grad.errors = Errors(grad, targets);
                         grad.derivs = ErrorDerivatives(grad, targets);
 
-                        double[][] inputsT = transposer.TransposeList(inputs);
-                        for(grad.fid = 0; grad.fid < inputsT.Length; grad.fid ++)
+                        double[][] inputsT = tr.TransposeList(inputs);
+                        for (grad.fid = 0; grad.fid < inputsT.Length; grad.fid++)
                         {
-                            grad.input_derivs = InputDerivatives(grad, inputsT[grad.fid]);
+                            double[] inputT = inputsT[grad.fid];
+                            grad.input_derivs = InputDerivatives(grad, inputT);
 
-                            double tmp_w = grad.ws[grad.fid] - grad.a * grad.GetJW();
+                            double tmp_w = grad.ws[grad.fid] - grad.a * CalcJW(grad);
                             grad.ws[grad.fid] = tmp_w;
                         }
 
-                        double tmp_b = grad.b - grad.a * grad.GetJB();
+                        double tmp_b = grad.b - grad.a * CalcJB(grad);
                         grad.b = tmp_b;
 
-                        grad.GetError();
-
-                        if (grad.error <= Math.Pow(10, -4))
-                            break;
+                        CalcError(grad);
                     }
-                    if (grad.error <= Math.Pow(10, -4))
-                        break;
                 }
                 else
+                {
                     break;
+                }
+                Console.WriteLine(grad.error);
             }
         }
     }
