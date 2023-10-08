@@ -112,21 +112,19 @@ namespace ValdeML
                         grad.derivs = ErrorDerivatives(grad, targets);
                         grad.input_derivs = InputDerivatives(grad, inputs);
 
-                        //double tmp_w = grad.w - (grad.a * grad.GetJW());
-                        double tmp_w = grad.w - (grad.a * OptimizeW(grad));
+                        double tmp_w = grad.w - (grad.a * grad.GetJW());
+                        //double tmp_w = grad.w - (grad.a * OptimizeW(grad));
                         grad.w = tmp_w;
 
-                        //double tmp_b = grad.b - (grad.a * grad.GetJB());
-                        double tmp_b = grad.b - (grad.a * OptimizeB(grad));
+                        double tmp_b = grad.b - (grad.a * grad.GetJB());
+                        //double tmp_b = grad.b - (grad.a * OptimizeB(grad));
                         grad.b = tmp_b;
 
                         grad.GetError();
 
-                        //if (grad.error <= Math.Pow(10, -3))
-                        //    break;
+                        if (grad.error <= Math.Pow(10, -3))
+                            grad.keep_training = !grad.keep_training;
                     }
-                    if (grad.error <= Math.Pow(10, -3))
-                        break;
                 }
                 else
                     break;

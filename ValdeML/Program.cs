@@ -7,14 +7,14 @@ namespace ValdeML
         static void Main(string[] args)
         {
             DatasetOneFeature dataset = new DatasetOneFeature();
-            dataset.Build(1000000,  128, 2, "zscore");
+            dataset.Build(1000000,  256, 2, "zscore");
 
             Grad grad = new Grad();
             grad.scaler= dataset.scaler;
-            grad.a = .4;
+            grad.a = .2;
             BCS lrs = new BCS();
-            SMODEL[][] to_train = dataset.batches.Skip(0).Take(dataset.batches.Length - 4).ToArray();
-            SMODEL[][] to_eval = dataset.batches.Skip(dataset.batches.Length - 4).ToArray();
+            SMODEL[][] to_train = dataset.batches.Skip(0).Take(dataset.batches.Length - 10).ToArray();
+            SMODEL[][] to_eval = dataset.batches.Skip(dataset.batches.Length - 10).ToArray();
             lrs.Train(grad, to_train);
 
             int correct = 0;
@@ -32,7 +32,7 @@ namespace ValdeML
                         wrong++;
                 }
             }
-            string res = $"{correct}, {wrong}, {(correct*100)/(correct+wrong)}";
+            string res = $"{correct}, {wrong}, {(correct*100) / (correct+wrong)}";
             //int testint = 123400;
             //double test_input = grad.SScaleInput(testint);
             //double prediction = lrs.Predict(grad, test_input);
