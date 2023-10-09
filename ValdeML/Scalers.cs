@@ -52,6 +52,7 @@ namespace ValdeML
             return scalers_lst;
         }
     }
+
     public class MEAN : iScaler
     {
         Transposer transposer = new Transposer();
@@ -102,6 +103,7 @@ namespace ValdeML
             return scalers_lst;
         }
     }
+
     public class ZSCORE : iScaler
     {
         public SCALER[] scalers;
@@ -163,6 +165,7 @@ namespace ValdeML
             return dataset;
         }
     }
+
     public class MAXSIN : iScaler
     {
         Transposer transposer = new Transposer();
@@ -212,6 +215,7 @@ namespace ValdeML
             return scalers_lst;
         }
     }
+
     public class MAXCOS : iScaler
     {
         Transposer transposer = new Transposer();
