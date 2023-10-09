@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/angularnodedeveloper/Documents/CSharp_ValdeML/ValdeML/ValdeML.csproj",
+      "projectUniqueName": "/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/ValdeML.csproj",
       "projectName": "ValdeML",
-      "projectPath": "/Users/angularnodedeveloper/Documents/CSharp_ValdeML/ValdeML/ValdeML.csproj",
+      "projectPath": "/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/ValdeML.csproj",
       "packagesPath": "/Users/angularnodedeveloper/.nuget/packages/",
-      "outputPath": "/Users/angularnodedeveloper/Documents/CSharp_ValdeML/ValdeML/obj/",
+      "outputPath": "/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/angularnodedeveloper/.nuget/NuGet/NuGet.Config"

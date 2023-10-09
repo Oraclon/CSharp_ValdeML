@@ -14,9 +14,9 @@ namespace ValdeML
 	public class Grad
 	{
 		//Gradient Vars
-		internal double w = 0.6;
-		internal double[] ws { get; set; }
-		internal double b = 0;
+		internal Wopt w = new Wopt();
+		internal Wopt[] ws { get; set; }
+		internal Bopt b = new Bopt();
 		//Optimizer Vars
 		internal Wopt wop = new Wopt();
 		internal Bopt bop = new Bopt();
@@ -55,14 +55,7 @@ namespace ValdeML
 		}
 		internal void UpdateW(double[] input)
 		{
-			Random random = new Random();
-			ws = new double[input.Length];
-			wops = new Wopt[input.Length];
-			for(int x= 0; x< input.Length; x++)
-			{
-				ws[x] = random.NextDouble() - .5;
-				wops[x] = new Wopt();
-			}
+			
 		}
 		internal void GetError()
 		{
