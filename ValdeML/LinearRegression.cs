@@ -77,7 +77,8 @@ namespace ValdeML
             return predictions;
 		}
 
-		public void Train(Grad grad, SMODEL[][] batches)
+
+        public void Train(Grad grad, SMODEL[][] batches)
 		{
             while (grad.error >= 0)
             {
@@ -202,6 +203,7 @@ namespace ValdeML
             }
             return predictions;
         }
+
 
         public void Train(Grad grad, MMODEL[][] batches)
         {

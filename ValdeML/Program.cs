@@ -12,18 +12,27 @@ namespace ValdeML
         static void Main(string[] args)
         {
             DatasetMultFeatures demodata = new DatasetMultFeatures();
-            demodata.Build(100000, 128, 2, "zscore", false);
+            demodata.Build(100000, 128, 2, "zscore", true);
 
             MMODEL[][] to_train = demodata.batches.Skip(0).Take(demodata.batches.Length - 4).ToArray();
             MMODEL[][] to_eval = demodata.batches.Skip(demodata.batches.Length - 4).ToArray();
 
             Grad grad = new Grad();
             grad.a = .4;
-            LRM lrs = new LRM();
+            BCM lrs = new BCM();
             lrs.Train(grad, to_train);
 
-            double pred = lrs.Predict(grad, to_eval[0][0].input);
-            double targ = to_eval[0][0].target;
+            for (int i = 0; i < to_eval.Length; i++)
+            {
+                MMODEL[] batch = to_eval[i];
+                for (int j = 0; j < batch.Length; j++)
+                {
+                    double pred = lrs.Predict(grad, batch[j].input);
+                    double targ = batch[j].target;
+                }
+            }
+
+            
         }
     }
 }
