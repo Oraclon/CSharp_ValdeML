@@ -3,11 +3,13 @@ namespace ValdeML
 {
 	public class Wopt
 	{
+		internal double w { get; set; }
 		internal double vdw = 0;
 		internal double sdw = 0;
 	}
 	public class Bopt
 	{
+		internal double b = 0;
 		internal double vdb = 0;
 		internal double sdb = 0;
 	}
@@ -55,7 +57,15 @@ namespace ValdeML
 		}
 		internal void UpdateW(double[] input)
 		{
-			
+			Random random = new Random();
+			int size = input.Length;
+			ws = new Wopt[size];
+			for (int i = 0; i < size; i++)
+			{
+				Wopt wop = new Wopt();
+				wop.w = random.NextDouble() * Math.Pow(10, -1);
+				ws[i] = wop;
+			}
 		}
 		internal void GetError()
 		{
