@@ -238,6 +238,7 @@ namespace ValdeML
 
         public void Train(Grad grad, MMODEL[][] batches)
         {
+            Adam opt = new Adam();
             grad.UpdateW(batches[0][0].input);
             Transposer tr = new Transposer();
             while (grad.error >= 0)
@@ -262,11 +263,13 @@ namespace ValdeML
 
                         double tmp_w = wop.w - grad.a * grad.GetJW();
                         wop.w = tmp_w;
+                        //wop.w = opt.Optimize(grad, false);
                     }
 
                     Bopt bop = grad.b;
                     double tmp_b = bop.b - grad.a * grad.GetJB();
                     bop.b = tmp_b;
+                    //bop.b = opt.Optimize(grad, true);
 
                     if (grad.error <= Math.Pow(10, -2))
                         break;

@@ -1,27 +1,42 @@
 ﻿<Properties StartupConfiguration="{0C2DB367-2F90-4793-8EA8-87296C1AFBF3}|Default">
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/LinearRegression.cs">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="111" column="1" />
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="243" column="1" />
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="128" column="1" />
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/Program.cs" relfile="ValdeML/Program.cs" line="32" column="1" />
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="275" column="21" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/Program.cs">
     <Files>
-      <File FileName="ValdeML/LinearRegression.cs" Line="20" Column="33" />
-      <File FileName="ValdeML/Gradient.cs" />
-      <File FileName="ValdeML/Program.cs" Line="14" Column="51" />
+      <File FileName="ValdeML/Program.cs" Line="32" Column="1" />
+      <File FileName="ValdeML/BinaryClassification.cs" Line="275" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ValdeML">
             <Node name="ValdeML">
-              <Node name="LinearRegression.cs" selected="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>grad.error</Value>
+          <Value>grad.epoch</Value>
+          <Value>grad.bid</Value>
+          <Value>pred</Value>
+          <Value>targ</Value>
+          <Value>grad.d</Value>
+        </State>
+      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.ValdeML PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.ValdeML PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
