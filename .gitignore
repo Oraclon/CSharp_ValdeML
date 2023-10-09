@@ -2,3 +2,5 @@
 .vs\
 .vs/ValdeML/xs/project-cache/ValdeML-Debug.json
 *.json
+*.txt
+*.pdb

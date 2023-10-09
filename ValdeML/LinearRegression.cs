@@ -102,6 +102,9 @@ namespace ValdeML
 
                     double tmp_b = bop.b - grad.a * grad.GetJB();
                     bop.b = tmp_b;
+
+                    if (grad.error <= Math.Pow(10, -2))
+                        break;
                 }
                 if (grad.error <= Math.Pow(10, -2))
                     break;
@@ -125,7 +128,15 @@ namespace ValdeML
 
         public double Predict(Grad grad, double[] inputs)
         {
-            throw new NotImplementedException();
+            int size = inputs.Length;
+            double[] feature_calcs = new double[size];
+            for (int i = 0; i < size; i++)
+            {
+                Wopt wop = grad.ws[i];
+                double feature_calc = wop.w * inputs[i];
+                feature_calcs[i] = feature_calc;
+            }
+            return feature_calcs.Sum() + grad.b.b;
         }
 
         public double[] InputDerivatives(Grad grad, double[] inputs)
@@ -185,7 +196,7 @@ namespace ValdeML
                 for (int j = 0; j < i_size; j++)
                 {
                     Wopt wopt = grad.ws[j];
-                    double feature_calc = wopt.w * features[i];
+                    double feature_calc = wopt.w * features[j];
                     feature_calcs[j] = feature_calc;
                 }
                 double prediction = feature_calcs.Sum() + grad.b.b;
@@ -224,6 +235,9 @@ namespace ValdeML
                     Bopt bop = grad.b;
                     double tmp_b = bop.b - grad.a * grad.GetJB();
                     bop.b = tmp_b;
+
+                    if (grad.error <= Math.Pow(10, -2))
+                        break;
                 }
                 if (grad.error <= Math.Pow(10, -2))
                     break;

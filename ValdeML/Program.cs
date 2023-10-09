@@ -11,28 +11,19 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-            string path = @"C:\Users\Raphael\Desktop\datasets\citrus.csv";
-            StreamReader reader = new StreamReader(path);
-            string[] lines = reader.ReadToEnd().Split("\n").Skip(1).ToArray();
+            DatasetMultFeatures demodata = new DatasetMultFeatures();
+            demodata.Build(100000, 128, 2, "zscore", false);
 
-            MMODEL[] dataset = new MMODEL[lines.Length-1];
-            for (int i = 0; i < lines.Length-1; i++)
-            {
-                if (!lines[i].Equals(""))
-                {
-                    MMODEL model = new MMODEL();
-                    string[] str_lines = lines[i].Split(",");
-                    model.input = str_lines.Skip(1).Select(x => Convert.ToDouble(x)).ToArray();
-                    model.target = (int)(Fruit)Enum.Parse(typeof(Fruit), str_lines[0]);
-                    dataset[i] = model;
-                }
-            }
-            dataset = new ZSCORE().Get(dataset);
-            MMODEL[][] batches = new Batches().Get(dataset, 64);
+            MMODEL[][] to_train = demodata.batches.Skip(0).Take(demodata.batches.Length - 4).ToArray();
+            MMODEL[][] to_eval = demodata.batches.Skip(demodata.batches.Length - 4).ToArray();
+
             Grad grad = new Grad();
             grad.a = .4;
-            BCM bcm = new BCM();
-            bcm.Train(grad, batches);
+            LRM lrs = new LRM();
+            lrs.Train(grad, to_train);
+
+            double pred = lrs.Predict(grad, to_eval[0][0].input);
+            double targ = to_eval[0][0].target;
         }
     }
 }
