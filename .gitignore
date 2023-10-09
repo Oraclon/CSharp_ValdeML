@@ -1,6 +1,10 @@
 .vs/
 .vs\
 .vs/ValdeML/xs/project-cache/ValdeML-Debug.json
+ValdeML/bin
+ValdeML\bin
+ValdeML/obj
+ValdeML\obj
 *.json
 *.txt
 *.pdb
