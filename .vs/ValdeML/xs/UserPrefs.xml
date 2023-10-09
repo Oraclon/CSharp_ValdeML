@@ -1,24 +1,24 @@
 ﻿<Properties StartupConfiguration="{0C2DB367-2F90-4793-8EA8-87296C1AFBF3}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="111" column="1" />
-    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="243" column="1" />
-    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="128" column="1" />
-    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/Program.cs" relfile="ValdeML/Program.cs" line="32" column="1" />
-    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="275" column="21" />
+    <BreakpointStore>
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="287" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/Program.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/BinaryClassification.cs">
     <Files>
-      <File FileName="ValdeML/Program.cs" Line="32" Column="1" />
-      <File FileName="ValdeML/BinaryClassification.cs" Line="275" Column="1" />
+      <File FileName="ValdeML/Program.cs" Line="15" Column="43" />
+      <File FileName="ValdeML/BinaryClassification.cs" Line="34" Column="1" />
+      <File FileName="ValdeML/Demos.cs" Line="17" Column="110" />
+      <File FileName="ValdeML/LinearRegression.cs" Line="1" Column="1" />
+      <File FileName="ValdeML/Optimizers.cs" Line="69" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ValdeML">
-            <Node name="ValdeML">
-              <Node name="Program.cs" selected="True" />
-            </Node>
+            <Node name="ValdeML" expanded="True" />
           </Node>
         </State>
       </Pad>
@@ -34,7 +34,6 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.ValdeML PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
 </Properties>
