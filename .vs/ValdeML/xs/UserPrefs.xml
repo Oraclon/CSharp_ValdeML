@@ -1,13 +1,11 @@
 ﻿<Properties StartupConfiguration="{0C2DB367-2F90-4793-8EA8-87296C1AFBF3}|Default">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="111" column="1" />
-      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="243" column="1" />
-      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="128" column="1" />
-      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/Program.cs" relfile="ValdeML/Program.cs" line="32" column="1" />
-      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="275" column="21" />
-    </BreakpointStore>
+    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="111" column="1" />
+    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/LinearRegression.cs" relfile="ValdeML/LinearRegression.cs" line="243" column="1" />
+    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="128" column="1" />
+    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/Program.cs" relfile="ValdeML/Program.cs" line="32" column="1" />
+    <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="275" column="21" />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/Program.cs">
     <Files>

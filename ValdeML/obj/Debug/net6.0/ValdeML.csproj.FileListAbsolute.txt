@@ -28,6 +28,11 @@ C:/Users/Raphael/Documents/GitHub/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/refint
 C:/Users/Raphael/Documents/GitHub/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.pdb
 C:/Users/Raphael/Documents/GitHub/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.genruntimeconfig.cache
 C:/Users/Raphael/Documents/GitHub/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ref/ValdeML.dll
+/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML
+/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.deps.json
+/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.runtimeconfig.json
+/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.dll
+/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.pdb
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.csproj.AssemblyReference.cache
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.GeneratedMSBuildEditorConfig.editorconfig
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.AssemblyInfoInputs.cache
@@ -36,10 +41,5 @@ C:/Users/Raphael/Documents/GitHub/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ref/Va
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.dll
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/refint/ValdeML.dll
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.pdb
-/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML
-/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.deps.json
-/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.runtimeconfig.json
-/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.dll
-/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/bin/Debug/net6.0/ValdeML.pdb
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ValdeML.genruntimeconfig.cache
 /Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/obj/Debug/net6.0/ref/ValdeML.dll

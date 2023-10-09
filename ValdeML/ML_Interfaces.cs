@@ -19,14 +19,14 @@ namespace ValdeML
 	//Linear Regression Single Feature.
 	public interface iLRSF: iML
 	{
-		void Train(Grad grad, SMODEL[][] batches);
+		void Train(Grad grad, SMODEL[][] batches, bool optim_activated);
 		double Predict(Grad grad, double input);
 		double[] Predictions(Grad grad, double[] inputs);
 	}
     //Linear Regression Multiple Features.
     public interface iLRMF: iML
 	{
-        void Train(Grad grad, MMODEL[][] batches);
+        void Train(Grad grad, MMODEL[][] batches, bool optim_activated);
         double Predict(Grad grad, double[] inputs);
 		double[] Predictions(Grad grad, double[][] inputs);
     }
@@ -37,14 +37,14 @@ namespace ValdeML
 	//Binary Classification Single Feature.
 	public interface iBCSF: iBC
 	{
-		void Train(Grad grad, SMODEL[][] batches);
+		void Train(Grad grad, SMODEL[][] batches, bool optim_activated);
 		double[] Predictions(Grad grad, double[] inputs);
 		double Predict(Grad grad, double input);
 	}
     //Binary Classification Multiple Features.
     public interface iBCMF: iBC
 	{
-		void Train(Grad grad, MMODEL[][] batches);
+		void Train(Grad grad, MMODEL[][] batches, bool optim_activated);
 		double[] Predictions(Grad grad, double[][] inputs);
 		double Predict(Grad grad, double[] inputs);
 	}

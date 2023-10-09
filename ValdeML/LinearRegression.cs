@@ -78,7 +78,7 @@ namespace ValdeML
 		}
 
 
-        public void Train(Grad grad, SMODEL[][] batches)
+        public void Train(Grad grad, SMODEL[][] batches, bool optim_activated)
 		{
             while (grad.error >= 0)
             {
@@ -205,11 +205,15 @@ namespace ValdeML
         }
 
 
-        public void Train(Grad grad, MMODEL[][] batches)
+        public void Train(Grad grad, MMODEL[][] batches, bool optim_activated)
         {
-            Momentum opt = new Momentum();
-            Transposer tr = new Transposer();
+            Adam opt = new Adam();
             grad.UpdateW(batches[0][0].input);
+            Transposer tr = new Transposer();
+
+            double w_var;
+            double b_var;
+
             while (grad.error >= 0)
             {
                 grad.epoch++;
@@ -230,14 +234,20 @@ namespace ValdeML
                         Wopt wop = grad.ws[grad.fid];
                         grad.input_derivs = InputDerivatives(grad, inputsT[grad.fid]);
 
-                        double tmp_w = wop.w - grad.a * grad.GetJW();
-                        //wop.w = tmp_w;
-                        wop.w = opt.Optimize(grad, false);
+                        if (!optim_activated)
+                            w_var = wop.w - grad.a * grad.GetJW();
+                        else
+                            w_var = opt.Optimize(grad, false);
+                        wop.w = w_var;
                     }
+
                     Bopt bop = grad.b;
-                    double tmp_b = bop.b - grad.a * grad.GetJB();
-                    //bop.b = tmp_b;
-                    bop.b = opt.Optimize(grad, true);
+
+                    if (!optim_activated)
+                        b_var = bop.b - grad.a * grad.GetJB();
+                    else
+                        b_var = opt.Optimize(grad, true);
+                    bop.b = b_var;
 
                     if (grad.error <= Math.Pow(10, -2))
                         break;

@@ -67,7 +67,11 @@ namespace ValdeML
 				wop.vdw = old_vdw;
 				double vdw_c = wop.vdw / (1 - Math.Pow(grad.b1, grad.d));
 
-				double old_sdw = grad.b2 * wop.sdw + (1 - grad.b2) * Math.Pow(grad.GetJW(), 2);
+				double sqrd_deriv = grad.input_derivs.Select(x => Math.Pow(x, 2)).ToArray().Sum() / grad.d;
+				//double sqrd_deriv = grad.input_derivs.Select(x => Math.Pow(x, 2)).ToArray().Sum();
+				//double sqrd_deriv = Math.Pow(grad.GetJW(), 2);
+
+				double old_sdw = grad.b2 * wop.sdw + (1 - grad.b2) * sqrd_deriv;
 				wop.sdw = old_sdw;
 				double sdw_c = wop.sdw / (1 - Math.Pow(grad.b2, grad.d));
 
@@ -81,7 +85,14 @@ namespace ValdeML
 				bop.vdb = old_vdb;
 				double vdb_c = bop.vdb / (1 - Math.Pow(grad.b1, grad.d));
 
-				double old_sdb = grad.b2 * bop.sdb + (1 - grad.b2) * Math.Pow(grad.GetJB(), 2);
+				double sqrd_deriv = grad.derivs.Select(x => Math.Pow(x, 2)).ToArray().Sum() / grad.d;
+				//double sqrd_deriv = grad.derivs.Select(x => Math.Pow(x, 2)).ToArray().Sum();
+				//double sqrd_deriv = Math.Pow(grad.GetJB(), 2);
+
+				double old_sdb = grad.b2 * bop.sdb + (1 - grad.b2) * sqrd_deriv;
+
+				//double old_sdb = grad.b2 * bop.sdb + (1 - grad.b2) * Math.Pow(grad.GetJB(), 2);
+
 				bop.sdb = old_sdb;
 				double sdb_c = bop.sdb / (1 - Math.Pow(grad.b2, grad.d));
 
