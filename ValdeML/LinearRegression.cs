@@ -167,7 +167,6 @@ namespace ValdeML
             return error_derivs;
         }
 
-
         public double[] Errors(Grad grad, double[] targets)
         {
             int size = targets.Length;
@@ -182,7 +181,6 @@ namespace ValdeML
             grad.error = errors.Sum() / (2 * targets.Length);
             return errors;
         }
-
 
         public double[] Predictions(Grad grad, double[][] inputs)
         {
