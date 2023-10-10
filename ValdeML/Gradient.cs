@@ -28,13 +28,17 @@ namespace ValdeML
 		internal double b2 = 0.999;
 		internal int d { get; set; }
 		internal double e = Math.Pow(10, -8);
-		//Training Vars
-		internal double a = 0.4;
+        //Control Vars
+        internal double error = 0;
+		internal double old_error = 0;
+		internal double tolerance = 0;
+		internal double tolerance_step = 0;
+        internal bool keep_training = true;
+        internal int bid { get; set; }
+        internal int fid { get; set; }
+        //Training Vars
+        internal double a = 0.4;
 		internal int epoch = 0;
-		internal double error = 0;
-		internal bool keep_training = true;
-		internal int bid { get; set; }
-		internal int fid { get; set; }
 		internal double[] preds { get; set; }
 		internal double[] pred_activations { get; set; }
 		internal double[] errors { get; set; }
@@ -102,19 +106,24 @@ namespace ValdeML
 
             return scaled;
 		}
-		internal double[] MultiplyElements(double[] elementslst1, double[] elementslst2, int division)
+		internal void SetTolerance(int var)
 		{
-			double[] result = new double[elementslst1.Length];
-			for(int i = 0; i < elementslst1.Length; i++)
+			tolerance = var;
+		}
+		internal void CheckError()
+		{
+			if(!error.Equals(old_error))
 			{
-				double mult = 0.0;
-				if(!division.Equals(-1))
-					mult = (elementslst1[i] * elementslst2[i])/ division;
-				else
-                    mult = elementslst1[i] * elementslst2[i];
-                result[i] = mult;
+				old_error = error;
 			}
-			return result;
+			else
+			{
+                tolerance_step++;
+				if(tolerance_step.Equals(tolerance))
+				{
+					keep_training = false;
+				}
+			}
 		}
 	}
 }

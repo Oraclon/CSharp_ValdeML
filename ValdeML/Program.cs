@@ -44,21 +44,28 @@ namespace ValdeML
             MMODEL[][] to_eval = batches.Skip(batches.Length - 2).ToArray();
 
             Grad grad = new Grad();
+            grad.SetTolerance(10);
             grad.a = .4;
             BCM lrs = new BCM();
-            lrs.Train(grad, batches, false);
+            lrs.Train(grad, to_train, true);
 
-            //for (int i = 0; i < to_eval.Length; i++)
-            //{
-            //    MMODEL[] batch = to_eval[i];
-            //    for (int j = 0; j < batch.Length; j++)
-            //    {
-            //        double pred = lrs.Predict(grad, batch[j].input);
-            //        double targ = batch[j].target;
-            //    }
-            //}
+            int correct = 0;
+            int wrong = 0;
+            for (int i = 0; i < to_eval.Length; i++)
+            {
+                MMODEL[] batch = to_eval[i];
+                for (int j = 0; j < batch.Length; j++)
+                {
+                    double pred = lrs.Predict(grad, batch[j].input);
+                    double targ = batch[j].target;
 
-
+                    if (pred.Equals(targ))
+                        correct++;
+                    else
+                        wrong++;
+                }
+            }
+                string res = $"{correct} {wrong} {(correct * 100) / (correct + wrong)}%";
         }
     }
 }

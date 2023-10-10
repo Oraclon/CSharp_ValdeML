@@ -248,43 +248,55 @@ namespace ValdeML
             while (grad.error >= 0)
             {
                 grad.epoch++;
-                for (grad.bid = 0; grad.bid < batches.Length; grad.bid++)
+
+                if(grad.keep_training)
                 {
-                    MMODEL[] batch = batches[grad.bid];
-                    double[][] inputs = batch.Select(x => x.input).ToArray();
-                    double[] targets = batch.Select(x => x.target).ToArray();
-                    grad.d = batch.Length;
 
-                    grad.preds = Predictions(grad, inputs);
-                    grad.errors = Errors(grad, targets);
-                    grad.derivs = ErrorDerivatives(grad, targets);
-
-                    double[][] inputsT = tr.TransposeList(inputs);
-                    for (grad.fid = 0; grad.fid < inputsT.Length; grad.fid++)
+                    for (grad.bid = 0; grad.bid < batches.Length; grad.bid++)
                     {
-                        Wopt wop = grad.ws[grad.fid];
-                        grad.input_derivs = InputDerivatives(grad, inputsT[grad.fid]);
+                        MMODEL[] batch = batches[grad.bid];
+                        double[][] inputs = batch.Select(x => x.input).ToArray();
+                        double[] targets = batch.Select(x => x.target).ToArray();
+                        grad.d = batch.Length;
+
+                        grad.preds = Predictions(grad, inputs);
+                        grad.errors = Errors(grad, targets);
+                        grad.derivs = ErrorDerivatives(grad, targets);
+
+                        double[][] inputsT = tr.TransposeList(inputs);
+                        for (grad.fid = 0; grad.fid < inputsT.Length; grad.fid++)
+                        {
+                            Wopt wop = grad.ws[grad.fid];
+                            grad.input_derivs = InputDerivatives(grad, inputsT[grad.fid]);
+
+                            if (!optim_activated)
+                                w_var = wop.w - grad.a * grad.GetJW();
+                            else
+                                w_var = opt.Optimize(grad, false);
+                            wop.w = w_var;
+                        }
+
+                        Bopt bop = grad.b;
 
                         if (!optim_activated)
-                            w_var = wop.w - grad.a * grad.GetJW();
+                            b_var = bop.b - grad.a * grad.GetJB();
                         else
-                            w_var = opt.Optimize(grad, false);
-                        wop.w = w_var;
+                            b_var = opt.Optimize(grad, true);
+                        bop.b = b_var;
+
+                        if (grad.error <= Math.Pow(10, -2))
+                            break;
                     }
-
-                    Bopt bop = grad.b;
-
-                    if (!optim_activated)
-                        b_var = bop.b - grad.a * grad.GetJB();
-                    else
-                        b_var = opt.Optimize(grad, true);
-                    bop.b = b_var;
-
+                    grad.CheckError();
                     if (grad.error <= Math.Pow(10, -2))
                         break;
+
                 }
-                if (grad.error <= Math.Pow(10, -2))
+                else
+                {
                     break;
+                }
+                
             }
         }
     }
