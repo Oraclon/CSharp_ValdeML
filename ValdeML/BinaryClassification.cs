@@ -288,6 +288,7 @@ namespace ValdeML
                             break;
                     }
 
+                    grad.CheckError();
                     if (grad.error <= Math.Pow(10, -2))
                         break;
                     else

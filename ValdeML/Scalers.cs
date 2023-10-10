@@ -147,12 +147,13 @@ namespace ValdeML
             double[][] scaled_lst = new double[inputs.Length][];
             for(int i= 0; i< inputs.Length; i++)
             {
+                double test = r.NextDouble();
                 SCALER scaler = scalers[i];
                 double[] inps = inputs[i];
                 double[] scaled = new double[inps.Length];
                 for(int j= 0; j< inps.Length; j++)
                 {
-                    scaled[j] = (inps[j] - scaler.m) / scaler.s;
+                    scaled[j] = !scaler.m.Equals(0) ? (inps[j] - scaler.m) / scaler.s : (scaler.s - scaler.m) / scaler.s;
                 }
                 scaled_lst[i] = scaled;
             }

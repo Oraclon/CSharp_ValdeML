@@ -39,7 +39,7 @@ namespace ValdeML
             ZSCORE scaler = new ZSCORE();
             dataset = scaler.Get(new_dataset.ToArray());
             dataset = dataset.OrderBy(_ => r.Next()).ToArray();
-            MMODEL[][] batches = new Batches().Get(dataset, 128);
+            MMODEL[][] batches = new Batches().Get(dataset, 32);
             MMODEL[][] to_train = batches.Skip(0).Take(batches.Length - 4).ToArray();
             MMODEL[][] to_eval = batches.Skip(batches.Length - 4).ToArray();
 
