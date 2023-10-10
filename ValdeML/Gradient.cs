@@ -115,6 +115,8 @@ namespace ValdeML
 			if(!error.Equals(old_error))
 			{
 				old_error = error;
+				string msg = $"{error} {old_error} {old_error - error}";
+				Console.WriteLine(msg);
 			}
 			else
 			{

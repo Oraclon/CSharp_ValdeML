@@ -15,16 +15,16 @@ namespace ValdeML
             //demodata.Build(1000000, 256, 5, "zscore", true);
             Random r = new Random();
 
-            string path = "/Users/angularnodedeveloper/Projects/datasets/datasets/sales_dataset.csv";
+            string path = "/Users/angularnodedeveloper/Projects/datasets/datasets/citrus.csv";
             StreamReader read = new StreamReader(path);
-            string[] lines = read.ReadToEnd().Split("\n");
-            MMODEL[] dataset = new MMODEL[lines.Length];
-            for (int i = 0; i < lines.Length; i++)
+            string[] lines = read.ReadToEnd().Split("\n").Skip(1).ToArray();
+            MMODEL[] dataset = new MMODEL[lines.Length-1];
+            for (int i = 0; i < lines.Length-1; i++)
             {
                 MMODEL model = new MMODEL();
-                double[] line = lines[i].Split(",").Select(x => Convert.ToDouble(x)).ToArray();
-                model.input = line.Skip(1).ToArray();
-                model.target = line[0];
+                string[] line = lines[i].Split(",").ToArray();
+                model.input = line.Skip(1).Select(x => Convert.ToDouble(x)).ToArray();
+                model.target = line[0].ToString() == "orange" ? 1 : 0;
                 dataset[i] = model;
             }
             int test1 = dataset.Where(x => x.target == 1).ToArray().Length;
@@ -39,9 +39,9 @@ namespace ValdeML
             ZSCORE scaler = new ZSCORE();
             dataset = scaler.Get(new_dataset.ToArray());
             dataset = dataset.OrderBy(_ => r.Next()).ToArray();
-            MMODEL[][] batches = new Batches().Get(dataset, 32);
-            MMODEL[][] to_train = batches.Skip(0).Take(batches.Length - 2).ToArray();
-            MMODEL[][] to_eval = batches.Skip(batches.Length - 2).ToArray();
+            MMODEL[][] batches = new Batches().Get(dataset, 128);
+            MMODEL[][] to_train = batches.Skip(0).Take(batches.Length - 4).ToArray();
+            MMODEL[][] to_eval = batches.Skip(batches.Length - 4).ToArray();
 
             Grad grad = new Grad();
             grad.SetTolerance(10);
