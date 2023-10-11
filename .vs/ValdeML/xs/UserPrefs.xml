@@ -1,24 +1,24 @@
 ﻿<Properties StartupConfiguration="{0C2DB367-2F90-4793-8EA8-87296C1AFBF3}|Default">
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/angularnodedeveloper/Projects/ValdeML/CSharp_ValdeML/ValdeML/BinaryClassification.cs" relfile="ValdeML/BinaryClassification.cs" line="287" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/BinaryClassification.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/Gradient.cs">
     <Files>
-      <File FileName="ValdeML/Program.cs" Line="15" Column="43" />
-      <File FileName="ValdeML/BinaryClassification.cs" Line="34" Column="1" />
-      <File FileName="ValdeML/Demos.cs" Line="17" Column="110" />
+      <File FileName="ValdeML/Program.cs" Line="67" Column="14" />
+      <File FileName="ValdeML/BinaryClassification.cs" Line="277" Column="1" />
       <File FileName="ValdeML/LinearRegression.cs" Line="1" Column="1" />
-      <File FileName="ValdeML/Optimizers.cs" Line="69" Column="1" />
+      <File FileName="ValdeML/Gradient.cs" Line="118" Column="58" />
+      <File FileName="ValdeML/Scalers.cs" Line="156" Column="122" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="ValdeML">
-            <Node name="ValdeML" expanded="True" />
+          <Node name="ValdeML" expanded="True">
+            <Node name="ValdeML" expanded="True">
+              <Node name="Gradient.cs" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>
@@ -27,9 +27,8 @@
           <Value>grad.error</Value>
           <Value>grad.epoch</Value>
           <Value>grad.bid</Value>
-          <Value>pred</Value>
-          <Value>targ</Value>
           <Value>grad.d</Value>
+          <Value>res</Value>
         </State>
       </Pad>
     </Pads>
