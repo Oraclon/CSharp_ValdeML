@@ -150,7 +150,7 @@ namespace ValdeML
 		//Model General Variables.
 		public double a { get; set; }
 		public int d { get; set; }
-		public double e { get; set; }
+		public double e = Math.Pow(10, -8);
 		public double b1 = 0.9;
 		public double b2 = 0.999;
 		// Functions
