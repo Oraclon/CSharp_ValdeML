@@ -246,9 +246,9 @@ namespace ValdeML
 				else if(type.Equals("sigmoid"))
 				{
 					act_calc              = "1 / (1 + Math.Exp(-prediction))";
-					act_der_calc          = "act*(1 - act)";
+					act_der_calc          = "activation * (1 - activation)";
 					activation            = 1 / (1 + Math.Exp(-1.0*prediction));
-					activation_derivative = prediction * (1 - prediction);
+					activation_derivative = activation * (1 - activation);
 				}
 				//ReLU to be added.
 				predictions[i]            = prediction;
