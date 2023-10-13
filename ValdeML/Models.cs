@@ -51,5 +51,51 @@ namespace ValdeML
         internal double[] input;
         internal double target;
     }
+
+    public class Model
+    {
+        #region Model Constructor
+        public Model(Errors error)
+        {
+            ErrorType = (int)error;
+            SelectedError = error.ToString();
+            KeepTraining = true;
+        }
+        #endregion
+        #region Model Variables
+        public int Epoch = 0;
+        public int Epochs { get; set; }
+        public int BatchId { get; set; }
+        public int BatchSize { get; set; }
+        public int ErrorType { get; set; }
+        public string SelectedError { get; set; }
+        public double Error { get; set; }
+        public double[] Errors { get; set; }
+        public double[][] ErrorDerivs { get; set; }
+        public double Learning { get; set; }
+        public bool KeepTraining { get; set; }
+        #endregion
+        #region Model Voids
+        private void GetError(int activation)
+        {
+            if (activation.Equals(0))
+            {
+                Error = Errors.Sum() / (2 * Errors.Length);
+            }
+            else if (activation.Equals(1))
+            {
+                Error = Errors.Sum() / Errors.Length;
+            }
+        }
+        public void UpdateError(double[][] layer_activations, double[] targets)
+        {
+
+        }
+        public void SetLearningRate(double learning)
+        {
+            Learning = learning;
+        }
+        #endregion
+    }
 }
 

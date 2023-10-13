@@ -28,10 +28,11 @@ namespace ValdeML
         Mean,      //0
         LogLoss,   //1
     }
-    public enum Optimizers
+    public enum Optimizer
     { 
-        Momentum,  //0
-        RmsProp,   //1
-        Adam       //2
+        None,      //0
+        Momentum,  //1
+        RmsProp,   //2
+        Adam       //3
     }
 }
