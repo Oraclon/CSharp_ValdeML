@@ -14,8 +14,8 @@ namespace ValdeML
             {
                 int actual = i + 1;
                 MMODEL model = new MMODEL();
-                //model.input = new double[] { actual * 100, -(actual * 10), Math.Pow(actual, 3), actual* 10000 };
-                model.input = new double[] { actual };
+                model.input = new double[] { actual * 100, -(actual * 10), Math.Pow(actual, 3), actual * 10000 };
+                //model.input = new double[] { actual };
 
                 if (!isbinary)
                     model.target = actual * multiplier;
