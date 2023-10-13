@@ -1,6 +1,7 @@
 ﻿using System;
 namespace ValdeML
 {
+    #region Common Models
     public class NodeInfo
     {
         public NodeInfo(int node_id, Activation activation)
@@ -51,7 +52,7 @@ namespace ValdeML
         internal double[] input;
         internal double target;
     }
-
+    #endregion
     public class Model
     {
         #region Model Constructor
