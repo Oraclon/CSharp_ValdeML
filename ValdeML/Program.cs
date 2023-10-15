@@ -17,8 +17,8 @@ namespace ValdeML
             DatasetMultFeatures data = new DatasetMultFeatures();
             data.Build(100000, 64, 2, "zscore", true);
             double[][] xx = data.dataset.Select(x => x.input).ToArray();
-            double[][] test  = Transposer2.TransposeList(xx);
-            double[][] test1 = Transposer2.TransposeList(test); 
+            double[][] test  = Transposer.TransposeList(xx);
+            double[][] test1 = Transposer.TransposeList(test); 
             MMODEL[][] batches = data.batches;
 
             while (model.Error >= 0)
