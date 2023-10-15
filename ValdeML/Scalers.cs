@@ -5,7 +5,6 @@ namespace ValdeML
 {
     public class MINMAX : iScaler
     {
-        Transposer transposer = new Transposer();
         public SCALER[] scalers;
         public MMODEL[] Calc(MMODEL[] dataset, double[][] inputs)
         {
@@ -21,7 +20,7 @@ namespace ValdeML
                 }
                 scaled_lst[i] = scaled;
             }
-            double[][] retransposed = transposer.TransposeList(scaled_lst);
+            double[][] retransposed = Transposer.TransposeList(scaled_lst);
             for (int i = 0; i < retransposed.Length; i++)
             {
                 dataset[i].input = retransposed[i];
@@ -33,7 +32,7 @@ namespace ValdeML
         {
             scalers = new SCALER[dataset[0].input.Length];
             double[][] inputs = dataset.Select(x => x.input).ToArray();
-            double[][] inputsT = transposer.TransposeList(inputs);
+            double[][] inputsT = Transposer.TransposeList(inputs);
             scalers = GetScalers(inputsT, "minmax");
             return Calc(dataset, inputsT);
         }
@@ -55,7 +54,6 @@ namespace ValdeML
 
     public class MEAN : iScaler
     {
-        Transposer transposer = new Transposer();
         public SCALER[] scalers;
         public MMODEL[] Calc(MMODEL[] dataset, double[][] inputs)
         {
@@ -71,7 +69,7 @@ namespace ValdeML
                 }
                 scaled_lst[i] = scaled;
             }
-            double[][] retransposed = transposer.TransposeList(scaled_lst);
+            double[][] retransposed = Transposer.TransposeList(scaled_lst);
             for (int i = 0; i < retransposed.Length; i++)
             {
                 dataset[i].input = retransposed[i];
@@ -83,7 +81,7 @@ namespace ValdeML
         {
             scalers = new SCALER[dataset[0].input.Length];
             double[][] inputs = dataset.Select(x => x.input).ToArray();
-            double[][] inputsT = transposer.TransposeList(inputs);
+            double[][] inputsT = Transposer.TransposeList(inputs);
             scalers = GetScalers(inputsT, "mean");
             return Calc(dataset, inputsT);
         }
@@ -107,12 +105,11 @@ namespace ValdeML
     public class ZSCORE : iScaler
     {
         public SCALER[] scalers;
-        Transposer transposer = new Transposer();
         public MMODEL[] Get(MMODEL[] dataset)
         {
             scalers = new SCALER[dataset[0].input.Length];
             double[][] inputs = dataset.Select(x => x.input).ToArray();
-            double[][] inputsT = transposer.TransposeList(inputs);
+            double[][] inputsT = Transposer.TransposeList(inputs);
             scalers = GetScalers(inputsT, "zscore");
             return Calc(dataset, inputsT);
         }
@@ -157,7 +154,7 @@ namespace ValdeML
                 }
                 scaled_lst[i] = scaled;
             }
-            double[][] retransposed = transposer.TransposeList(scaled_lst);
+            double[][] retransposed = Transposer.TransposeList(scaled_lst);
             for (int i = 0; i < retransposed.Length; i++)
             {
                 dataset[i].input = retransposed[i];
@@ -169,7 +166,6 @@ namespace ValdeML
 
     public class MAXSIN : iScaler
     {
-        Transposer transposer = new Transposer();
         public SCALER[] scalers;
         public MMODEL[] Calc(MMODEL[] dataset, double[][] inputs)
         {
@@ -186,7 +182,7 @@ namespace ValdeML
                 }
                 scaled_lst[i] = scaled;
             }
-            double[][] retransposed = transposer.TransposeList(scaled_lst);
+            double[][] retransposed = Transposer.TransposeList(scaled_lst);
             for (int i = 0; i < retransposed.Length; i++)
             {
                 dataset[i].input = retransposed[i];
@@ -198,7 +194,7 @@ namespace ValdeML
         {
             scalers = new SCALER[dataset[0].input.Length];
             double[][] inputs = dataset.Select(x => x.input).ToArray();
-            double[][] inputsT = transposer.TransposeList(inputs);
+            double[][] inputsT = Transposer.TransposeList(inputs);
             scalers = GetScalers(inputsT, "maxsin");
             return Calc(dataset, inputsT);
         }
@@ -219,7 +215,6 @@ namespace ValdeML
 
     public class MAXCOS : iScaler
     {
-        Transposer transposer = new Transposer();
         public SCALER[] scalers;
         public MMODEL[] Calc(MMODEL[] dataset, double[][] inputs)
         {
@@ -236,7 +231,7 @@ namespace ValdeML
                 }
                 scaled_lst[i] = scaled;
             }
-            double[][] retransposed = transposer.TransposeList(scaled_lst);
+            double[][] retransposed = Transposer.TransposeList(scaled_lst);
             for (int i = 0; i < retransposed.Length; i++)
             {
                 dataset[i].input = retransposed[i];
@@ -248,7 +243,7 @@ namespace ValdeML
         {
             scalers = new SCALER[dataset[0].input.Length];
             double[][] inputs = dataset.Select(x => x.input).ToArray();
-            double[][] inputsT = transposer.TransposeList(inputs);
+            double[][] inputsT = Transposer.TransposeList(inputs);
             scalers = GetScalers(inputsT, "maxcos");
             return Calc(dataset, inputsT);
         }

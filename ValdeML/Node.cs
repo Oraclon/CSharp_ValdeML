@@ -164,7 +164,7 @@ namespace ValdeML
                 NodeJPows[i] = Math.Pow(previous_deriv[i] * ActivationDerivs[i], 2);
             }
 
-            var InputsT      = new Transposer().TransposeList(respect_to);
+            var InputsT      = Transposer.TransposeList(respect_to);
             int SlopesLength = InputsT.Length;
 
             NodeJWs     = new double[SlopesLength][];

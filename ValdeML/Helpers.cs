@@ -1,26 +1,31 @@
 using System;
 namespace ValdeML
 {
-    public class Transposer
+    public static class Transposer
     {
-        public double[][] TransposeList(double[][] inputs)
+        public static double[][] TransposeList(double[][] inputs)
         {
-            double[][] transposed = new double[inputs[0].Length][];
-            for(int i= 0; i < inputs[0].Length; i++)
+            int outter_size = inputs.Length;
+            int inner_size = inputs[0].Length;
+
+            double[][] transposed = new double[inner_size][];
+
+            for (int i = 0; i < inner_size; i++)
             {
-                double[] input_array = new double[inputs.Length];
-                for(int j= 0; j< inputs.Length; j++)
+                double[] test = new double[outter_size];
+                for (int j = 0; j < outter_size; j++)
                 {
-                    input_array[j] = inputs[j][i];
+                    test[j] = inputs[j][i];
                 }
-                transposed[i] = input_array;
+                transposed[i] = test;
             }
             return transposed;
         }
     }
-    public class Batches
+
+    public static class Batches
     {
-        public MMODEL[][] Get(MMODEL[] dataset, int batchsize)
+        public static MMODEL[][] Get(MMODEL[] dataset, int batchsize)
         {
             int totalbatches = dataset.Length / batchsize;
             MMODEL[][] batches= new MMODEL[totalbatches][];

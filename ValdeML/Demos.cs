@@ -55,7 +55,7 @@ namespace ValdeML
                 scalers = scaler.scalers;
             }
             dataset = dataset.OrderBy(_ => random.Next()).ToArray();
-            batches = new Batches().Get(dataset, batchsize);
+            batches = Batches.Get(dataset, batchsize);
         }
     }
     class DatasetOneFeature
