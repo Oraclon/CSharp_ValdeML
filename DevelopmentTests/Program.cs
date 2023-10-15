@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Microsoft.VisualBasic;
 
-namespace ValdeML
+namespace DevelopmentTests
 {
     static class DemoDataset
     {
@@ -15,7 +15,7 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-            
+            FastLoop.Run(10000);
         }
     }
 }
