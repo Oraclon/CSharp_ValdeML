@@ -41,7 +41,6 @@ namespace ValdeML
                     layer3.NodesCalcDeltas(model.ErrorDerivs, layer2.nodeActivations);
                     layer2.NodesCalcDeltas(layer3.nodeDeltas, layer1.nodeActivations);
                     layer1.NodesCalcDeltas(layer2.nodeDeltas, inputs);
-                    
 
                     layer3.NodesUpdate(model);
                     layer2.NodesUpdate(model);

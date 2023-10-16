@@ -1,4 +1,7 @@
 using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
 namespace ValdeML
 {
     public static class Transposer
@@ -13,10 +16,15 @@ namespace ValdeML
             for (int i = 0; i < inner_size; i++)
             {
                 double[] test = new double[outter_size];
-                for (int j = 0; j < outter_size; j++)
+
+                Span<double> outterSizeAsSpan = Enumerable.Range(0, outter_size).Select(x=> Convert.ToDouble(x)).ToArray();
+                ref var searchSpace = ref MemoryMarshal.GetReference(outterSizeAsSpan);
+                for (int j = 0; j < outterSizeAsSpan.Length; j++)
                 {
-                    test[j] = inputs[j][i];
+                    var selectedId = (int)Unsafe.Add(ref searchSpace, j);
+                    test[j] = inputs[selectedId][i];
                 }
+
                 transposed[i] = test;
             }
             return transposed;
