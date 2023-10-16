@@ -164,27 +164,81 @@ namespace ValdeML
             for (int i = 0; i < inputsTOuter; i++) 
             {
                 double[] weight_delta = new double[inputsTInner];
-                for (int j = 0; j < inputsTInner; j++)
+
+                Span<double> inputsTAsSpan = inputsT[i];
+                ref var inputsTSearchArea = ref MemoryMarshal.GetReference(inputsTAsSpan);
+                for (int j = 0; j < inputsTAsSpan.Length; j++)
                 {
-                    weight_delta[j] = nodeDeltas[j] * inputsT[i][j];
+                    double inputT = Unsafe.Add(ref inputsTSearchArea, j);
+                    weight_delta[j] = nodeDeltas[j] * inputT;
                 }
+
                 tmp_weight_deltas[i] = weight_delta;
             }
             weightDeltas = tmp_weight_deltas;
         }
         #endregion
 
+        public double NodeEval(double[] input)
+        {
+            int featuresLen = input.Length;
+            double[] featuresPred = new double[featuresLen];
+            double activation = 0.0;
+
+            for (int i = 0; i < featuresLen; i++)
+            {
+                featuresPred[i] = w[i] * input[i];
+            }
+
+            double prediction = featuresPred.Sum() + b;
+
+            if(activationId.Equals(3))
+            {
+                activation = Math.Tanh(prediction);
+            }
+            else if(activationId.Equals(4))
+            {
+                activation = (int)Math.Round(1 / (1 + Math.Exp(-prediction)));
+            }
+
+            return activation;
+        }
+
         public void NodeUpdate(Model model)
         {
             for (int i = 0; i < totalFeatures; i++)
             {
                 double jw = weightDeltas[i].Sum() / model.BatchSize;
-                double tmp_w = w[i] - model.Learning * jw;
+                double jwp = weightDeltas[i].Select(x => Math.Pow(x, 2)).Sum() / model.BatchSize;
+
+                double old_vdw = model.B1 * vdw[i] + (1 - model.B1) * jw;
+                double old_sdw = model.B2 * sdw[i] + (1 - model.B2) * jwp;
+
+                vdw[i] = old_vdw;
+                sdw[i] = old_sdw;
+
+                double vdw_c = vdw[i] / (1 - Math.Pow(model.B1, model.BatchSize));
+                double sdw_c = sdw[i] / (1 - Math.Pow(model.B2, model.BatchSize));
+
+                //double tmp_w = w[i] - model.Learning * jw;
+                double tmp_w = w[i] - model.Learning * vdw_c / (Math.Sqrt(sdw_c) + model.e);
                 w[i] = tmp_w;
             }
 
             double j = nodeDeltas.Sum() / model.BatchSize;
-            double tmp_b = b - model.Learning * j;
+            double jp = nodeDeltas.Select(x => Math.Pow(x, 2)).Sum() / model.BatchSize;
+
+            double old_vdb = model.B1 * vdb + (1 - model.B1) * j;
+            double old_sdb = model.B2 * sdb + (1 - model.B2) * jp;
+
+            vdb = old_vdb;
+            sdb = old_sdb;
+
+            double vdb_c = vdb / (1 - Math.Pow(model.B1, model.BatchSize));
+            double sdb_c = sdb / (1 - Math.Pow(model.B2, model.BatchSize));
+
+            //double tmp_b = b - model.Learning * j;
+            double tmp_b = b - model.Learning * vdb_c / (Math.Sqrt(sdb_c) + model.e);
             b = tmp_b;
         }
         #endregion  
