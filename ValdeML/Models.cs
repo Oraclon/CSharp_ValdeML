@@ -85,64 +85,25 @@ namespace ValdeML
         #region Model Variables
         public int Epoch = 0;
         public int Epochs { get; set; }
+
         public int BatchId { get; set; }
         public int BatchSize { get; set; }
+
         public int ErrorType { get; set; }
         public string SelectedError { get; set; }
         public double Error { get; set; }
+
         public double[] Errors { get; set; }
         public double[][] ErrorDerivs { get; set; }
+
         public double Learning { get; set; }
         public bool KeepTraining { get; set; }
 
         public double B1 = 0.9;
         public double B2 = 0.999;
-        public double e = Math.Pow(10, -3);
-
+        public double e = Math.Pow(10, -8);
         #endregion
-        #region Model Voids
-        private void GetError()
-        {
-            if (ErrorType.Equals(0))
-            {
-                Error = Errors.Sum() / (2 * Errors.Length);
-            }
-            else if (ErrorType.Equals(1))
-            {
-                Error = Errors.Sum() / Errors.Length;
-            }
-        }
-        public void UpdateError(double[][] layer_activations, double[] targets)
-        {
-            if(layer_activations.Length.Equals(1))
-            {
-                double[] LayerActivations = layer_activations[0];
-                Errors = new double[LayerActivations.Length];
-
-                ErrorDerivs = new double[layer_activations.Length][];
-                double[] tmp_error_derivs = new double[LayerActivations.Length];
-                for (int i = 0; i < LayerActivations.Length; i++)
-                {
-                    if (ErrorType.Equals(0))
-                    {
-                        Errors[i] = Math.Pow(LayerActivations[i] - targets[i], 2);
-                        tmp_error_derivs[i] = 2 * (LayerActivations[i] - targets[i]);
-                    }
-                    else if (ErrorType.Equals(1))
-                    {
-                        Errors[i] = targets[i] == 1 ? -Math.Log(LayerActivations[i]) : -Math.Log(1 - LayerActivations[i]);
-                        tmp_error_derivs[i] = targets[i] == 1 ? -1 / LayerActivations[i] : 1 / (1 - LayerActivations[i]);
-                    }
-                    ErrorDerivs[0] = tmp_error_derivs;
-                }
-                GetError();
-            }
-        }
-        public void SetLearningRate(double learning)
-        {
-            Learning = learning;
-        }
-        #endregion
+        
     }
 }
 
