@@ -198,7 +198,7 @@ namespace ValdeML
             }
             else if(activationId.Equals(4))
             {
-                activation = (int)Math.Round(1 / (1 + Math.Exp(-prediction)));
+                activation = 1 / (1 + Math.Exp(-prediction));
             }
 
             return activation;

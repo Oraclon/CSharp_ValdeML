@@ -29,6 +29,7 @@ namespace ValdeML
         #region Layer Common Variables
         public int totalNodes             { get; set; }
         public string layerNodeActivation { get; set; }
+        public double[] evalActivations   { get; set; }
         #endregion
 
         #region Layer Nodes Variables
@@ -68,6 +69,16 @@ namespace ValdeML
             {
                 nodes[i].NodeUpdate(model);
             }
+        }
+
+        public void NodesEvaluate(double[] input)
+        {
+            double[] nodeEvalActivations = new double[totalNodes];
+            for (int i = 0; i < totalNodes; i++)
+            {
+                nodeEvalActivations[i] = nodes[i].NodeEval(input);
+            }
+            evalActivations = nodeEvalActivations;
         }
         #endregion
     }

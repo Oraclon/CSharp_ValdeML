@@ -77,32 +77,34 @@ namespace ValdeML
         #region Model Constructor
         public Model(Errors error)
         {
-            ErrorType = (int)error;
-            SelectedError = error.ToString();
-            KeepTraining = true;
+            ErrorType                 = (int)error;
+            SelectedError             = error.ToString();
+            KeepTraining              = true;
         }
         #endregion
 
         #region Model Variables
-        public int Epoch = 0;
-        public int Epochs { get; set; }
+        public int Epoch              = 0;
+        public int Epochs             { get; set; }
 
-        public int BatchId { get; set; }
-        public int BatchSize { get; set; }
+        public int BatchId            { get; set; }
+        public int BatchSize          { get; set; }
 
-        public int ErrorType { get; set; }
-        public string SelectedError { get; set; }
-        public double Error { get; set; }
+        public int ErrorType          { get; set; }
+        public string SelectedError   { get; set; }
+        public double Error           { get; set; }
 
-        public double[][] Errors { get; set; }
+        public double[][] Errors      { get; set; }
         public double[][] ErrorDerivs { get; set; }
 
-        public double Learning { get; set; }
-        public bool KeepTraining { get; set; }
+        public double Learning        { get; set; }
+        public bool KeepTraining      { get; set; }
 
-        public double B1 = 0.9;
-        public double B2 = 0.999;
-        public double e = Math.Pow(10, -8);
+        public double B1              = 0.9;
+        public double B2              = 0.999;
+        public double e               = Math.Pow(10, -8);
+
+        public string evalText        { get; set; }
         #endregion
 
         #region Model Voids

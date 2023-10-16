@@ -9,30 +9,14 @@ namespace ValdeML
         }
         static void Main(string[] args)
         {
-            Random r = new Random();
-            string path = @"/Users/angularnodedeveloper/Projects/datasets/datasets/citrus.csv";
-            StreamReader fileData = new StreamReader(path);
-            string[] dataLines = fileData.ReadToEnd().Split("\n").Skip(1).ToArray();
-
-            MMODEL[] dataSet = new MMODEL[dataLines.Length - 1];
-            for(int i = 0; i< dataSet.Length; i++)
-            {
-                string[] lineData = dataLines[i].Split(",");
-                MMODEL mod = new MMODEL();
-                mod.target = (int)(Fruits)Enum.Parse(typeof(Fruits), lineData[0]);
-                mod.input = lineData.Skip(1).Select(x => Convert.ToDouble(x)).ToArray();
-                dataSet[i] = mod;
-            }
-
-            ZSCORE scaler = new ZSCORE();
-            dataSet = scaler.Get(dataSet).OrderBy(_=> r.Next()).ToArray();
-            MMODEL[][] batches = Batches.Get(dataSet, 128);
-            MMODEL[][] toTrain = batches.Take(batches.Length - 4).ToArray();
-            MMODEL[][] toEval = batches.Skip(batches.Length - 4).ToArray();
+            DatasetMultFeatures data = new DatasetMultFeatures();
+            data.Build(2000000, 512, 2, "zscore", true);
+            MMODEL[][] toTrain = data.batches.Take(data.batches.Length - 10).ToArray();
+            MMODEL[][] toEval = data.batches.Skip(data.batches.Length - 10).ToArray();
 
 
-            Layer layer1 = new Layer(4, Activation.Tanh);
-            Layer layer2 = new Layer(4, Activation.Tanh);
+            Layer layer1 = new Layer(18, Activation.Tanh);
+            Layer layer2 = new Layer(18, Activation.Tanh);
             Layer layer3 = new Layer(1, Activation.Sigmoid);
 
             Model model = new Model(Errors.LogLoss);
@@ -57,6 +41,7 @@ namespace ValdeML
                     layer3.NodesCalcDeltas(model.ErrorDerivs, layer2.nodeActivations);
                     layer2.NodesCalcDeltas(layer3.nodeDeltas, layer1.nodeActivations);
                     layer1.NodesCalcDeltas(layer2.nodeDeltas, inputs);
+                    
 
                     layer3.NodesUpdate(model);
                     layer2.NodesUpdate(model);
@@ -65,11 +50,13 @@ namespace ValdeML
                     if (model.Error <= Math.Pow(10, -3))
                         break;
                 }
+
                 if (model.Error <= Math.Pow(10, -3))
                 {
                     EvalTraining(toEval);
                     break;
                 }
+
                 string res = $"{model.Epoch}, {model.BatchId}, {model.Error}";
                 Console.Write("\r{0} ", res);
             }
@@ -84,9 +71,18 @@ namespace ValdeML
                 {
                     foreach(MMODEL item in batch)
                     {
-                        //Evaluation Code
+                        layer1.NodesEvaluate(item.input);
+                        layer2.NodesEvaluate(layer1.evalActivations);
+                        layer3.NodesEvaluate(layer2.evalActivations);
+
+                        var prediction = (double)Math.Round(layer3.evalActivations[0]);
+                        if (item.target.Equals(prediction))
+                            correct++;
+                        else
+                            wrong++;
                     }
                 }
+                model.evalText = $"{correct} {wrong} {(correct * 100) / (correct+ wrong)}%";
             }
         }
     }
