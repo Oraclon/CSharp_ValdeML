@@ -82,6 +82,7 @@ namespace ValdeML
             KeepTraining = true;
         }
         #endregion
+
         #region Model Variables
         public int Epoch = 0;
         public int Epochs { get; set; }
@@ -93,7 +94,7 @@ namespace ValdeML
         public string SelectedError { get; set; }
         public double Error { get; set; }
 
-        public double[] Errors { get; set; }
+        public double[][] Errors { get; set; }
         public double[][] ErrorDerivs { get; set; }
 
         public double Learning { get; set; }
@@ -103,7 +104,54 @@ namespace ValdeML
         public double B2 = 0.999;
         public double e = Math.Pow(10, -8);
         #endregion
-        
+
+        #region Model Voids
+        private void _GetError()
+        {
+            if (ErrorType.Equals(0))
+            {
+                Error = Errors[0].Sum() / (2 * BatchSize);
+            }
+            else if (ErrorType.Equals(1))
+            {
+                Error = Errors[0].Sum() / BatchSize;
+            }
+        }
+
+        public void CalculateError(double[][] layer_activations, double[]targets)
+        {
+            double[][] layerActivationsT = Transposer.TransposeList(layer_activations);
+            int outerSize = layerActivationsT.Length;
+            int innerSize = layerActivationsT[0].Length;
+
+            double[][] tmp_errors_lst = new double[outerSize][];
+            double[][] tmp_error_deriv_lst = new double[outerSize][];
+            for (int i = 0; i < outerSize; i++)
+            {
+
+                double[] tmp_errors = new double[innerSize];
+                double[] tmp_derivs = new double[innerSize];
+                for (int j = 0; j < innerSize; j++)
+                {
+                    if (ErrorType.Equals(0))
+                    {
+                        tmp_errors[j] = Math.Pow(layerActivationsT[i][j] - targets[j], 2);
+                        tmp_derivs[j] = 2 * (layerActivationsT[i][j] - targets[j]);
+                    }
+                    else if (ErrorType.Equals(1))
+                    {
+                        tmp_errors[j] = targets[j] == 1 ? -Math.Log(layerActivationsT[i][j]) : -Math.Log(1 - layerActivationsT[i][j]);
+                        tmp_derivs[j] = targets[j] == 1 ? -1 / layerActivationsT[i][j] : 1 / (1 - layerActivationsT[i][j]);
+                    }
+                }
+                tmp_errors_lst[i]      = tmp_errors;
+                tmp_error_deriv_lst[i] = tmp_derivs;
+            }
+            Errors      = tmp_errors_lst;
+            ErrorDerivs = tmp_error_deriv_lst;
+            _GetError();
+        }
+        #endregion
     }
 }
 

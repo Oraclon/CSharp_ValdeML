@@ -46,7 +46,7 @@ namespace ValdeML
         #endregion
 
         #region Node Voids
-        private void __UpdateNode()
+        private void __PrepareNode()
         {
             Random random = new Random();
             w = new double[totalFeatures];
@@ -74,7 +74,7 @@ namespace ValdeML
             double[] activationDerivs = new double[inputs.Length];
 
             if (!nodeIsReady)
-                __UpdateNode();
+                __PrepareNode();
 
             Span<double[]> inputsAsSpan = inputs;
             ref var searchspace         = ref MemoryMarshal.GetReference(inputsAsSpan);
@@ -106,6 +106,75 @@ namespace ValdeML
                 activations[i]      = activation;
                 activationDerivs[i] = activationDeriv;
             }
+
+            nodeActivations         = activations;
+            nodeActivationDerivs    = activationDerivs;
+        }
+
+        private void _GetNodeDeltas(double[][] tmp_delta_calculation_results)
+        {
+            double[][] tmp_delta_calculation_results_T = Transposer.TransposeList(tmp_delta_calculation_results);
+
+            int outerSize = tmp_delta_calculation_results_T.Length;
+            int innerSize = tmp_delta_calculation_results_T[0].Length;
+
+            double[] deltas = new double[outerSize];
+            for (int i = 0; i < outerSize; i++)
+            {
+                deltas[i] = tmp_delta_calculation_results_T[i].Sum() / innerSize;
+            }
+            nodeDeltas = deltas;
+        }
+        public void NodeCalcDeltas(double[][] previous_derivatives, double[][] respect_to)
+        {
+            int outer_prev_derivs_size = previous_derivatives.Length;
+            int inner_prev_derivs_size = previous_derivatives[0].Length;
+
+            double[][] tmp_delta_calculations = new double[outer_prev_derivs_size][];
+
+            for (int i = 0; i < outer_prev_derivs_size; i++)
+            {
+                double[] delta_calculations = new double[inner_prev_derivs_size];
+                for (int j = 0; j < inner_prev_derivs_size; j++)
+                {
+                    delta_calculations[j] = previous_derivatives[i][j] * nodeActivationDerivs[j];
+                }
+                tmp_delta_calculations[i] = delta_calculations;
+            }
+            //nodeDeltas = _GetNodeDeltas(tmp_delta_calculations);
+            _GetNodeDeltas(tmp_delta_calculations);
+
+            double[][] inputsT = Transposer.TransposeList(respect_to);
+
+            int inputsTOuter = inputsT.Length;
+            int inputsTInner = inputsT[0].Length;
+
+            double[][] tmp_weight_deltas = new double[inputsTOuter][];
+
+            for (int i = 0; i < inputsTOuter; i++) 
+            {
+                double[] weight_delta = new double[inputsTInner];
+                for (int j = 0; j < inputsTInner; j++)
+                {
+                    weight_delta[j] = nodeDeltas[j] * inputsT[i][j];
+                }
+                tmp_weight_deltas[i] = weight_delta;
+            }
+            weightDeltas = tmp_weight_deltas;
+        }
+
+        public void NodeUpdate(Model model)
+        {
+            for (int i = 0; i < totalFeatures; i++)
+            {
+                double jw = weightDeltas[i].Sum() / model.BatchSize;
+                double tmp_w = w[i] - model.Learning * jw;
+                w[i] = tmp_w;
+            }
+
+            double j = nodeDeltas.Sum() / model.BatchSize;
+            double tmp_b = b - model.Learning * j;
+            b = tmp_b;
         }
         #endregion  
     }

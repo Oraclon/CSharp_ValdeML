@@ -15,10 +15,14 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-            Node node = new Node(1, Activation.Sigmoid);
+            Layer layer1 = new Layer(12, Activation.Tanh);
+            Layer layer2 = new Layer(12, Activation.Tanh);
+            Layer layer3 = new Layer(1, Activation.Sigmoid);
             DatasetMultFeatures data = new DatasetMultFeatures();
-            data.Build(100000, 128, 2, "zscore", true);
+            data.Build(100000, 512, 2, "zscore", true);
             Model model = new Model(Errors.LogLoss);
+            model.Learning = .4;
+
             while (model.Error >= 0)
             {
                 for (model.BatchId = 0; model.BatchId < data.batches.Length; model.BatchId++)
@@ -26,8 +30,21 @@ namespace ValdeML
                     MMODEL[] batch = data.batches[model.BatchId];
                     double[][] inputs = batch.Select(x => x.input).ToArray();
                     double[] targets = batch.Select(x => x.target).ToArray();
+                    model.BatchSize = batch.Length;
 
-                    node.NodePredict(inputs);
+                    layer1.NodesPredict(inputs);
+                    layer2.NodesPredict(layer1.nodeActivations);
+                    layer3.NodesPredict(layer2.nodeActivations);
+
+                    model.CalculateError(layer3.nodeActivations, targets);
+
+                    layer3.NodesCalcDeltas(model.ErrorDerivs, layer2.nodeActivations);
+                    layer2.NodesCalcDeltas(layer3.nodeDeltas, layer1.nodeActivations);
+                    layer1.NodesCalcDeltas(layer2.nodeDeltas, inputs);
+
+                    layer3.NodesUpdate(model);
+                    layer2.NodesUpdate(model);
+                    layer1.NodesUpdate(model);
                 }
             }
         }
