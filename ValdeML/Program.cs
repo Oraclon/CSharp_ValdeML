@@ -15,8 +15,8 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-            Layer layer1 = new Layer(12, Activation.Tanh);
-            Layer layer2 = new Layer(12, Activation.Tanh);
+            Layer layer1 = new Layer(24, Activation.Tanh);
+            Layer layer2 = new Layer(24, Activation.Tanh);
             Layer layer3 = new Layer(1, Activation.Sigmoid);
             DatasetMultFeatures data = new DatasetMultFeatures();
             data.Build(100000, 512, 2, "zscore", true);
