@@ -46,6 +46,8 @@ namespace ValdeML
         #endregion
 
         #region Node Voids
+
+        #region Prediction Calculations
         private void __PrepareNode()
         {
             Random random = new Random();
@@ -110,7 +112,9 @@ namespace ValdeML
             nodeActivations         = activations;
             nodeActivationDerivs    = activationDerivs;
         }
+        #endregion
 
+        #region Delta Calculations
         private void _GetNodeDeltas(double[][] tmp_delta_calculation_results)
         {
             double[][] tmp_delta_calculation_results_T = Transposer.TransposeList(tmp_delta_calculation_results);
@@ -125,6 +129,7 @@ namespace ValdeML
             }
             nodeDeltas = deltas;
         }
+
         public void NodeCalcDeltas(double[][] previous_derivatives, double[][] respect_to)
         {
             int outer_prev_derivs_size = previous_derivatives.Length;
@@ -135,10 +140,15 @@ namespace ValdeML
             for (int i = 0; i < outer_prev_derivs_size; i++)
             {
                 double[] delta_calculations = new double[inner_prev_derivs_size];
-                for (int j = 0; j < inner_prev_derivs_size; j++)
+
+                Span<double> prevDersAsSpan = previous_derivatives[i];
+                ref var prevDersSearchArea = ref MemoryMarshal.GetReference(prevDersAsSpan);
+                for (int j = 0; j < prevDersAsSpan.Length; j++)
                 {
-                    delta_calculations[j] = previous_derivatives[i][j] * nodeActivationDerivs[j];
+                    double prevDerivative = Unsafe.Add(ref prevDersSearchArea, j);
+                    delta_calculations[j] = prevDerivative * nodeActivationDerivs[j];
                 }
+
                 tmp_delta_calculations[i] = delta_calculations;
             }
             //nodeDeltas = _GetNodeDeltas(tmp_delta_calculations);
@@ -162,6 +172,7 @@ namespace ValdeML
             }
             weightDeltas = tmp_weight_deltas;
         }
+        #endregion
 
         public void NodeUpdate(Model model)
         {

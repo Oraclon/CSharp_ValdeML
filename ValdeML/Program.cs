@@ -6,11 +6,6 @@ using Microsoft.VisualBasic;
 
 namespace ValdeML
 {
-    static class DemoDataset
-    {
-
-    }
-
     class Program
     {
         static void Main(string[] args)
@@ -19,7 +14,7 @@ namespace ValdeML
             Layer layer2 = new Layer(24, Activation.Tanh);
             Layer layer3 = new Layer(1, Activation.Sigmoid);
             DatasetMultFeatures data = new DatasetMultFeatures();
-            data.Build(100000, 512, 2, "zscore", true);
+            data.Build(100000, 512, 4, "zscore", true);
             Model model = new Model(Errors.LogLoss);
             model.Learning = .4;
 
@@ -45,6 +40,14 @@ namespace ValdeML
                     layer3.NodesUpdate(model);
                     layer2.NodesUpdate(model);
                     layer1.NodesUpdate(model);
+
+                    if (model.Error <= Math.Pow(10, -3))
+                        break;
+                }
+                if (model.Error <= Math.Pow(10, -3))
+                {
+                    string res = $"{model.Epoch}, {model.BatchId}, {model.Error}";
+                    break;
                 }
             }
         }
