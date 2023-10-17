@@ -8,8 +8,9 @@ namespace ValdeML
     public class Node
     {
         #region Node Constructor
-        public Node(int node_id, Activation activation)
+        public Node(int? layer_attached, int node_id, Activation activation)
         {
+            layerAttached = layer_attached;
             nodeId         = node_id;
             nodeIsReady    = false;
             activationId   = (int)activation;
@@ -18,6 +19,7 @@ namespace ValdeML
         #endregion
 
         #region Node Info Variables
+        public int? layerAttached            { get; set; }
         public int nodeId                    { get; set; }
         public bool nodeIsReady              { get; set; }
         public int totalFeatures             { get; set; }
@@ -125,7 +127,10 @@ namespace ValdeML
             double[] deltas = new double[outerSize];
             for (int i = 0; i < outerSize; i++)
             {
-                deltas[i] = tmp_delta_calculation_results_T[i].Sum() / innerSize;
+                if (tmp_delta_calculation_results_T[i].Length.Equals(1))
+                    deltas[i] = tmp_delta_calculation_results_T[i][0];
+                else
+                    deltas[i] = tmp_delta_calculation_results_T[i].Sum() / innerSize;
             }
             nodeDeltas = deltas;
         }

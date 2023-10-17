@@ -10,14 +10,14 @@ namespace ValdeML
     public class Layer
     {
         #region Layer Constructor
-        public Layer(int total_nodes, Activation activation)
+        public Layer(int? layer_id, int total_nodes, Activation activation)
         {
             totalNodes = total_nodes;
             nodes      = new Node[total_nodes];
 
             for (int i = 0; i < totalNodes; i++)
             {
-                Node node = new Node(i + 1, activation);
+                Node node = new Node(layer_id, i + 1, activation);
                 nodes[i] = node;
             }
 
@@ -65,6 +65,9 @@ namespace ValdeML
 
         public void NodesUpdate(Model model)
         {
+            if (model.Learning.Equals(0))
+                throw new Exception(MLMessages.NA0002);
+
             for (int i = 0; i < totalNodes; i++)
             {
                 nodes[i].NodeUpdate(model);

@@ -153,6 +153,9 @@ namespace ValdeML
             Errors      = tmp_errors_lst;
             ErrorDerivs = tmp_error_deriv_lst;
             _GetError();
+
+            if (Error <= Math.Pow(10, -3))
+                KeepTraining = false;
         }
         #endregion
     }
@@ -197,6 +200,7 @@ namespace ValdeML
         public Data[] dataSet { get; set; }
         public Data[][] batches { get; set; }
         public DScaler[] scalers { get; set; }
+        public bool hasBatches { get; set; }
 
         #region Dataset Voids
         public void GetBatches(int batchSize, Data[] dataSet)
@@ -214,6 +218,8 @@ namespace ValdeML
                 batches[bid] = batch;
                 bid++;
             }
+
+            hasBatches = true;
         }
 
         public void BuildDemo(int datasetSize, int batch_size, double multy_var,
