@@ -72,6 +72,7 @@ namespace ValdeML
         internal double target;
     }
     #endregion
+
     public class Model
     {
         #region Model Constructor
@@ -155,5 +156,125 @@ namespace ValdeML
         }
         #endregion
     }
-}
 
+    public class DScaler
+    {
+        double _GetS(double[] inputArray)
+        {
+            int size = inputArray.Length;
+            double[] s_calculations = new double[size];
+            for (int i = 0; i < size; i++)
+            {
+                double calculation = Math.Pow(inputArray[i] - m, 2) / (size - 1);
+                s_calculations[i] = calculation;
+            }
+            return Math.Sqrt(s_calculations.Sum());
+        }
+
+        public DScaler(double[] inputArray)
+        {
+            min = inputArray.Min();
+            max = inputArray.Max();
+            m = inputArray.Average();
+            s = _GetS(inputArray);
+        }
+
+        public double m { get; set; }
+        public double s { get; set; }
+        public double min { get; set; }
+        public double max { get; set; }
+    }
+
+    public class Data
+    {
+        public int? id { get; set; }
+        public double[] input { get; set; }
+        public double target { get; set; }
+    }
+
+    public class Dataset
+    {
+        public Data[] dataSet { get; set; }
+        public Data[][] batches { get; set; }
+        public DScaler[] scalers { get; set; }
+
+        #region Dataset Voids
+        public void GetBatches(int batchSize, Data[] dataSet)
+        {
+            int datasetSize = dataSet.Length;
+            int totalBatches = datasetSize / batchSize;
+            batches = new Data[totalBatches][];
+
+            int bid = 0;
+            for (int i = 0; i < datasetSize; i += batchSize)
+            {
+                if (bid.Equals(totalBatches))
+                    continue;
+                Data[] batch = dataSet.Skip(i).Take(batchSize).ToArray();
+                batches[bid] = batch;
+                bid++;
+            }
+        }
+
+        public void BuildDemo(int datasetSize, int batch_size, double multy_var,
+                              Scaler activation, bool isBinary)
+        {
+            int activationID = (int)activation;
+
+            #region DatasetBuild
+            Random random = new Random();
+            
+            dataSet = new Data[datasetSize];
+            
+
+            for (int i = 0; i < datasetSize; i++)
+            {
+                int value   = i + 1;
+                Data data   = new Data();
+                data.input  = new double[] { value * 10, -Math.Pow(value, -10) };
+                data.target = isBinary ? value <= datasetSize / multy_var ? 0 : 1 : value * multy_var;
+                dataSet[i] = data;
+            }
+            dataSet = dataSet.OrderBy(_ => random.Next()).ToArray();
+
+            GetBatches(batch_size, dataSet);
+            #endregion
+
+            #region Dataset Scale
+            double[][] inputsT = Transposer.TransposeList(dataSet.Select(x => x.input).ToArray());
+            scalers = new DScaler[inputsT.Length];
+            double[][] tmp_scaled = new double[inputsT.Length][];
+
+            for (int i = 0; i < inputsT.Length; i++)
+            {
+                double[] selectedInputT = inputsT[i];
+                double[] tmp_scale_calcs = new double[selectedInputT.Length];
+
+                DScaler scaler = new DScaler(selectedInputT);
+                scalers[i] = scaler;
+                for (int j = 0; j < selectedInputT.Length; j++)
+                {
+                    double inputT = selectedInputT[j];
+                    if (activationID.Equals(0))
+                        tmp_scale_calcs[j] = (inputT - scaler.min) / (scaler.max - scaler.min);
+                    else if (activationID.Equals(1))
+                        tmp_scale_calcs[j] = (inputT - scaler.m) / (scaler.max - scaler.min);
+                    else if (activationID.Equals(2))
+                        tmp_scale_calcs[j] = (inputT - scaler.m) / scaler.s;
+                    else
+                        throw new Exception(MLMessages.NA0001);
+                }
+                tmp_scaled[i] = tmp_scale_calcs;
+            }
+
+            double[][] scaledT = Transposer.TransposeList(tmp_scaled);
+            for (int i = 0; i < scaledT.Length; i++)
+            {
+                dataSet[i].input = scaledT[i];
+            }
+            #endregion
+
+            #endregion
+        }
+    }
+}
