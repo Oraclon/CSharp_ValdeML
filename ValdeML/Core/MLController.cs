@@ -41,8 +41,10 @@ namespace ValdeML
 
 		public void StartTraining(Model model, Dataset dataSet)
 		{
+			if (totalLayers.Equals(1))
+                throw new Exception(MLMessages.SUG0001);
 
-			if (dataSet.hasBatches)
+            if (dataSet.hasBatches)
 			{
 				do
 				{
