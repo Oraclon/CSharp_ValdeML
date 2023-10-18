@@ -10,9 +10,11 @@
   <ItemGroup>
     <None Remove="Common\" />
     <None Remove="Core\" />
+    <None Remove="ML_Tools\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
     <Folder Include="Core\" />
+    <Folder Include="ML_Tools\" />
   </ItemGroup>
 </Project>

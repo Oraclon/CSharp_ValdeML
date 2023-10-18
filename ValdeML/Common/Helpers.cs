@@ -31,23 +31,23 @@ namespace ValdeML
         }
     }
 
-    public static class Batches
-    {
-        public static MMODEL[][] Get(MMODEL[] dataset, int batchsize)
-        {
-            int totalbatches = dataset.Length / batchsize;
-            MMODEL[][] batches= new MMODEL[totalbatches][];
-            int bid = 0;
-            for(int x= 0; x< dataset.Length; x+= batchsize)
-            {
-                if (bid.Equals(totalbatches))
-                    continue;
-                MMODEL[] batch = dataset.Skip(x).Take(batchsize).ToArray();
-                batches[bid] = batch;
-                bid++;
-            }
-            return batches;
-        }
-    }
+    //public static class Batches
+    //{
+    //    public static MMODEL[][] Get(MMODEL[] dataset, int batchsize)
+    //    {
+    //        int totalbatches = dataset.Length / batchsize;
+    //        MMODEL[][] batches= new MMODEL[totalbatches][];
+    //        int bid = 0;
+    //        for(int x= 0; x< dataset.Length; x+= batchsize)
+    //        {
+    //            if (bid.Equals(totalbatches))
+    //                continue;
+    //            MMODEL[] batch = dataset.Skip(x).Take(batchsize).ToArray();
+    //            batches[bid] = batch;
+    //            bid++;
+    //        }
+    //        return batches;
+    //    }
+    //}
 }
 

@@ -4,22 +4,11 @@ namespace ValdeML
     {
         static void Main(string[] args)
         {
-
-            Model model = new Model(Errors.LogLoss);
-            model.Learning = .2;
-
             Dataset dataSet = new Dataset();
             dataSet.BuildDemo(300000, 16, 2, Scaler.ZScore, true);
 
-            MLController mlc = new MLController();
-            mlc.AddLayer(Activation.Tanh, 64);
-            mlc.AddLayer(Activation.Tanh, 64);
-            mlc.AddLayer(Activation.Sigmoid, 1);
-            mlc.BuildLayers();
-
-            mlc.StartTraining(model, dataSet);
-
-            var ttt = model.Epochs;
+            BinaryClassification ml = new BinaryClassification(.4, 0);
+            ml.Train(dataSet);
         }
     }
 }

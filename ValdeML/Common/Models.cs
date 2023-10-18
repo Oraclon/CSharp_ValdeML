@@ -1,77 +1,25 @@
 ﻿using System;
 namespace ValdeML
 {
-    #region Common Models
-    public class NodeInfo
+    public class GradientModel
     {
-        public NodeInfo(int node_id, Activation activation)
-        {
-            NodeId = node_id;
-            ActivationType = activation.ToString();
-            int act_id = (int)activation;
-            if (act_id == 0)
-            {
-                ActivationMath = "-";
-                ActivationDerivMath = "-";
-            }
-            else if (act_id == 3)
-            {
-                ActivationMath = "Math.Tanh(prediction);";
-                ActivationDerivMath = " 1 - Math.Pow(activation, 2);";
-            }
-            else if (act_id == 4)
-            {
-                ActivationMath = "1 / (1 + Math.Exp(-prediction));";
-                ActivationDerivMath = "activation * (1 - activation);";
-            }
-        }
-        internal int NodeId { get; set; }
-        internal string ActivationType { get; set; }
-        internal string ActivationMath { get; set; }
-        internal string ActivationDerivMath { get; set; }
+        public double[] w { get; set; }
+        public double[] vdw { get; set; }
+        public double[] sdw { get; set; }
+        public double b { get; set; }
+        public double vdb { get; set; }
+        public double sdb { get; set; }
+        public double[] errors { get; set; }
+        public double[] errorDerivs { get; set; }
+        public double[] activations { get; set; }
+        public double[] activationDerivs { get; set; }
+        public double[] deltas { get; set; }
+        public double[] deltasPow { get; set; }
+        public double[][] weightDeltas { get; set; }
+        public double[][] weightDeltasPow { get; set; }
+        public bool isReady { get; set; }
+        public int totalFeatures { get; set; }
     }
-    public class LayerInfo
-    {
-        public LayerInfo(Activation activation)
-        {
-            Activation = activation.ToString();
-            int SelectedActivationId = (int)activation;
-
-            if(SelectedActivationId.Equals(3))
-            {
-                NodeActivationCalc = "Math.Tanh(Prediction)";
-                NodeActivationDerivCalc = "1 - Math.Pow(Activation,2)";
-            }
-            else if(SelectedActivationId.Equals(4))
-            {
-                NodeActivationCalc = "1 / (1 + Math.Exp(-Prediction))";
-                NodeActivationDerivCalc = "Activation * (1 - Activation)";
-            }
-        }
-
-        internal string Activation { get; set; }
-        internal string NodeActivationCalc { get; set; }
-        internal string NodeActivationDerivCalc { get; set; }
-    }
-    public class SCALER
-    {
-        internal string type { get; set; }
-        internal double m { get; set; }
-        internal double s { get; set; }
-        internal double min { get; set; }
-        internal double max { get; set; }
-    }
-    public class SMODEL
-    {
-        internal double input { get; set; }
-        internal double target { get; set; }
-    }
-    public class MMODEL
-    {
-        internal double[] input;
-        internal double target;
-    }
-    #endregion
 
     public class Model
     {
