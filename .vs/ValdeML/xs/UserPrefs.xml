@@ -1,38 +1,38 @@
-﻿<Properties StartupConfiguration="{0C2DB367-2F90-4793-8EA8-87296C1AFBF3}|Default">
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/Gradient.cs">
+﻿<Properties GitUserInfo="UsingGIT" StartupConfiguration="{0C2DB367-2F90-4793-8EA8-87296C1AFBF3}|Default">
+  <MonoDevelop.Ide.ItemProperties.ValdeML PreferredExecutionTarget="MonoDevelop.Default" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ValdeML/Program.cs">
     <Files>
-      <File FileName="ValdeML/Program.cs" Line="67" Column="14" />
-      <File FileName="ValdeML/BinaryClassification.cs" Line="277" Column="1" />
-      <File FileName="ValdeML/LinearRegression.cs" Line="1" Column="1" />
-      <File FileName="ValdeML/Gradient.cs" Line="118" Column="58" />
-      <File FileName="ValdeML/Scalers.cs" Line="156" Column="122" />
+      <File FileName="ValdeML/Program.cs" Line="7" Column="1" />
+      <File FileName="ValdeML/Common/Models.cs" Line="205" Column="9" />
+      <File FileName="ValdeML/Core/Layer.cs" Line="69" Column="1" />
+      <File FileName="ValdeML/Core/MLController.cs" Line="89" Column="1" NotebookId="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="ValdeML" expanded="True">
-            <Node name="ValdeML" expanded="True">
-              <Node name="Gradient.cs" selected="True" />
-            </Node>
+          <Node name="ValdeML">
+            <Node name="ValdeML" expanded="True" />
           </Node>
         </State>
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State>
-          <Value>grad.error</Value>
-          <Value>grad.epoch</Value>
-          <Value>grad.bid</Value>
-          <Value>grad.d</Value>
-          <Value>res</Value>
+          <Value>model.Error</Value>
+          <Value>model.Epoch</Value>
+          <Value>model.BatchId</Value>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.ValdeML PreferredExecutionTarget="MonoDevelop.Default" />
-  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/CSharp_ValdeML/DevelopmentTests/Program.cs" relfile="DevelopmentTests/Program.cs" line="109" column="1" />
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/CSharp_ValdeML/ValdeML/Program.cs" relfile="ValdeML/Program.cs" line="297" column="1" />
+      <Breakpoint file="/Users/angularnodedeveloper/Projects/CSharp_ValdeML/ValdeML/Program.cs" relfile="ValdeML/Program.cs" line="22" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.DevelopmentTests PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
