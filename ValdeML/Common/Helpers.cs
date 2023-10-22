@@ -31,6 +31,21 @@ namespace ValdeML
         }
     }
 
+    public static class LoopDataBuilder
+    {
+        public static LoopRetModel Get(Dataset dataSet, Model model)
+        {
+            LoopRetModel loopRet = new LoopRetModel();
+            Data[] batch       = dataSet.batches[model.BatchId];
+            loopRet.inputs     = batch.Select(x => x.input).ToArray();
+            loopRet.targets    = batch.Select(x => x.target).ToArray();
+            model.BatchSize    = batch.Length;
+            model.FeatureSize  = batch[0].input.Length;
+
+            return loopRet;
+        }
+    }
+
     //public static class Batches
     //{
     //    public static MMODEL[][] Get(MMODEL[] dataset, int batchsize)

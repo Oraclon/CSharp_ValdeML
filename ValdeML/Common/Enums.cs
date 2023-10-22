@@ -27,6 +27,7 @@ namespace ValdeML
     {
         Mean,      //0
         LogLoss,   //1
+        None       //2
     }
     public enum Optimizer
     { 

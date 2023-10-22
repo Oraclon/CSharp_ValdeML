@@ -1,24 +1,82 @@
 ﻿using System;
 namespace ValdeML
 {
+    public class LoopRetModel
+    {
+        public double[][] inputs { get; set; }
+        public double[] targets { get; set; }
+    }
     public class GradientModel
     {
+        public GradientModel()
+        {
+            isReady = false;
+            keepTraining = true;
+        }
+
+        public bool isReady { get; set; }
+        public bool keepTraining { get; set; }
+        public LoopRetModel loopRet { get; set; }
+
         public double[] w { get; set; }
         public double[] vdw { get; set; }
         public double[] sdw { get; set; }
+
         public double b { get; set; }
         public double vdb { get; set; }
         public double sdb { get; set; }
-        public double[] errors { get; set; }
-        public double[] errorDerivs { get; set; }
+
+        public int itemId { get; set; }
+        public int batchId { get; set; }
+        public int dataSize { get; set; }
+        public int featuresLen { get; set; }
+
         public double[] activations { get; set; }
         public double[] activationDerivs { get; set; }
+
+        public double[] errors { get; set; }
+        public double[] errorDerivs { get; set; }
+
         public double[] deltas { get; set; }
         public double[] deltasPow { get; set; }
-        public double[][] weightDeltas { get; set; }
-        public double[][] weightDeltasPow { get; set; }
-        public bool isReady { get; set; }
-        public int totalFeatures { get; set; }
+        public double[][] wDeltas { get; set; }
+        public double[][] wDeltasPow { get; set; }
+
+        private void _BuildGradient()
+        {
+            Random rand = new Random();
+            w = new double[featuresLen];
+            vdw = new double[featuresLen];
+            sdw = new double[featuresLen];
+
+            for (int i = 0; i < featuresLen; i++)
+            {
+                w[i] = rand.NextDouble() - .5;
+                vdw[i] = 0;
+                sdw[i] = 0;
+            }
+
+            b = 0;
+            vdb = 0;
+            sdb = 0;
+
+            isReady = true;
+        }
+        public LoopRetModel GetLoopData(Dataset dataSet)
+        {
+            Data[] data = dataSet.hasBatches ? dataSet.batches[batchId] : dataSet.dataSet;
+            dataSize = data.Length;
+            featuresLen = data[0].input.Length;
+
+            loopRet = new LoopRetModel();
+            loopRet.inputs = data.Select(x => x.input).ToArray();
+            loopRet.targets = data.Select(x => x.target).ToArray();
+
+            if (!isReady)
+                _BuildGradient();
+
+            return loopRet;
+        }
     }
 
     public class Model
@@ -29,6 +87,7 @@ namespace ValdeML
             ErrorType                 = (int)error;
             SelectedError             = error.ToString();
             KeepTraining              = true;
+            Error = 0;
         }
         #endregion
 
@@ -36,8 +95,10 @@ namespace ValdeML
         public int Epoch              = 0;
         public int Epochs             { get; set; }
 
+        public int ItemId             { get; set; }
         public int BatchId            { get; set; }
         public int BatchSize          { get; set; }
+        public int FeatureSize        { get; set; }
 
         public int ErrorType          { get; set; }
         public string SelectedError   { get; set; }
@@ -48,12 +109,11 @@ namespace ValdeML
 
         public double Learning        { get; set; }
         public bool KeepTraining      { get; set; }
+        public bool IsReady           { get; set; }
 
         public double B1              = 0.9;
         public double B2              = 0.999;
         public double e               = Math.Pow(10, -8);
-
-        public string evalText        { get; set; }
         #endregion
 
         #region Model Voids

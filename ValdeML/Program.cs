@@ -5,9 +5,10 @@ namespace ValdeML
         static void Main(string[] args)
         {
             Dataset dataSet = new Dataset();
-            dataSet.BuildDemo(300000, 16, 2, Scaler.ZScore, true);
+            dataSet.BuildDemo(20000, 256, 4, Scaler.ZScore, false);
 
-            BinaryClassification ml = new BinaryClassification(.4, 0);
+            BinaryClassification ml = new BinaryClassification();
+            ml.model.Learning = 0.4;
             ml.Train(dataSet);
         }
     }
