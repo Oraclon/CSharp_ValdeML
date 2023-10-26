@@ -13,7 +13,7 @@ namespace AimsMLV2
     {
         public static double B1 = 0.9;
         public static double B2 = 0.999;
-        public static double E = Math.Pow(10, -3);
+        public static double E = Math.Pow(10, -8);
     }
     public class Inf
     {
