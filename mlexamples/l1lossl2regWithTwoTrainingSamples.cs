@@ -119,4 +119,9 @@ class Program
         return output * (1 - output);
     }
 
-    // L1 Loss function (for multi-output
+    // L1 Loss function (for multi-output classification)
+    static double L1Loss(double output, double target)
+    {
+        return Math.Abs(output - target); // |output - target|
+    }
+}
