@@ -1,9 +1,58 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace ConsoleApp1
 {
+    #region [Forecast]
+    public class WeatherAPIForecastDayAstro
+    {
+        public string sunrise { get; set; }
+        public string sunset { get; set; }
+        public string moonrise { get; set; }
+        public string moonset { get; set; }
+        public string moon_phase { get; set; }
+        public int moon_illumination { get; set; }
+        public bool is_moon_up { get; set; }
+        public bool is_sun_up { get; set; }
+    }
+    public class WeatherAPIForecastDaySingle
+    { 
+        public float maxtemp_c { get; set; }
+        public float maxtemp_f { get; set; }
+        public float mintemp_c { get; set; }
+        public float mintemp_f { get; set; }
+        public float avgtemp_c { get; set; }
+        public float avgtemp_f { get; set; }
+        public float maxwind_mph { get; set; }
+        public float maxwind_kph { get; set; }
+        public float totalprecip_mm { get; set; }
+        public float totalprecip_in { get; set; }
+        public float totalsnow_cm { get; set; }
+        public float avgvis_km { get; set; }
+        public float avgvis_miles { get; set; }
+        public int avghumidity { get; set; }
+        public bool daily_will_it_rain { get; set; }
+        public bool daily_chance_of_rain { get; set; }
+        public bool daily_will_it_snow { get; set; }
+        public bool daily_chance_of_snow { get; set; }
+        public float uv { get; set; }
+        public WeatherAPICondition condition { get; set; }
+    }
+    public class WeatherAPIForecastDay
+    { 
+        public string date { get; set; }
+        public long date_epoch { get; set; }
+        public WeatherAPIForecastDaySingle day { get; set; }
+        public WeatherAPIForecastDayAstro astro { get; set; }
+        public WeatherAPICurrent[] hour { get; set; }
+    }
+    public class WeatherAPIForecast 
+    {
+        public WeatherAPIForecastDay[] forecastday { get; set; }
+    }
+    #endregion
     public class WeatherAPIAirQuality
     {
         public float co { get; set; }
@@ -65,5 +114,6 @@ namespace ConsoleApp1
     {
         public WeatherAPILocation location { get; set; }
         public WeatherAPICurrent current { get; set; }
+        public WeatherAPIForecast forecast { get; set; }
     }
 }
