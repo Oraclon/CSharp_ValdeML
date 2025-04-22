@@ -5,6 +5,24 @@ using System.Text;
 
 namespace ConsoleApp1
 {
+    public class WeatherAPITime
+    { 
+        public string FullDate { set {
+                DateTime date = DateTime.Parse(value);
+                DayOfWeek = date.DayOfWeek.ToString();
+                Full = date.ToString("dd/MM/yyyy");
+                Hour = date.ToString("HH:mm");
+                Month = date.ToString("MMMM");
+                Year = date.Year.ToString();
+                Date = date.Day.ToString();
+        } }
+        public string DayOfWeek { get; set; }
+        public string Full { get; set; }
+        public string Hour { get; set; }
+        public string Month { get; set; }
+        public string Year { get; set; }
+        public string Date { get; set; }
+    }
     #region [Forecast]
     public class WeatherAPIForecastDayAstro
     {
@@ -70,6 +88,9 @@ namespace ConsoleApp1
     }
     public class WeatherAPICurrent
     {
+        public WeatherAPITime TimeInfo = new WeatherAPITime();
+        public string time { set { TimeInfo.FullDate = value; } }
+        public string hour { get; set; }
         public long last_updated_epoch { get; set; }
         public string last_updated { get; set; }
         public float temp_c { get; set; }
@@ -101,6 +122,7 @@ namespace ConsoleApp1
     }
     public class WeatherAPILocation
     {
+        public WeatherAPITime TimeInfo = new WeatherAPITime();
         public string name { get; set; }
         public string region { get; set; }
         public string country { get; set; }
@@ -108,7 +130,7 @@ namespace ConsoleApp1
         public float lon { get; set; }
         public string tz_id { get; set; }
         public long localtime_epoch { get; set; }
-        public string localtime { get; set; }
+        public string localtime { set { TimeInfo.FullDate = value; } }
     }
     public class WeatherAPI
     {
