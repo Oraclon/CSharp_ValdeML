@@ -30,3 +30,4 @@ extern "C" __declspec(dllexport) void LaunchKernel(float* hostData, int rows, in
     cudaFree(device2D);
     delete[] hostPointers;
 }
+//nvcc -o wrapper.dll --shared wrapper.cpp kernel.cu
