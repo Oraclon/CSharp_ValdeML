@@ -61,3 +61,13 @@ class Program
 //[DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
 //static extern void LaunchKernel(...);
 //Note: You may need to use NativeLibrary.SetDllImportResolver in .NET 6+ to redirect DllImport to your chosen file name dynamically.
+
+//2. Modify Your .csproj to Ensure .so is Copied (Optional)
+//If you want to copy the .so file to the output directory during the build process (similar to what you do for .dll files), you can modify your .csproj file:
+
+//<ItemGroup>
+//  <None Update="libs/libwrapper.so">
+//    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+//  </None>
+//</ItemGroup>
+//This will ensure that the .so file is copied to the output directory (e.g., bin/Debug/net5.0/).
