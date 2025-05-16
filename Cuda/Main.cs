@@ -5,7 +5,7 @@ class Program
 {
     const int rows = 3;
     const int cols = 3;
-
+    //For LINUX -> [DllImport("libwrapper.so", CallingConvention = CallingConvention.Cdecl)]
     [DllImport("wrapper.dll", CallingConvention = CallingConvention.Cdecl)]
     public static extern void LaunchKernel(float[] data, int rows, int cols);
 
@@ -39,3 +39,25 @@ class Program
         }
     }
 }
+
+//nvcc -o wrapper.dll --shared wrapper.cpp kernel.cu
+//FOR LINUX 
+//nvcc -o libwrapper.so --shared wrapper.cpp kernel.cu
+
+//If you want your C# program to be cross-platform, use RuntimeInformation to select the correct library dynamically:
+
+//static string GetLibName()
+//{
+//    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+//        return "wrapper.dll";
+//    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+//        return "libwrapper.so";
+//    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+//        return "libwrapper.dylib";
+//    else
+//        throw new PlatformNotSupportedException();
+//}
+
+//[DllImport("__Internal", CallingConvention = CallingConvention.Cdecl)]
+//static extern void LaunchKernel(...);
+//Note: You may need to use NativeLibrary.SetDllImportResolver in .NET 6+ to redirect DllImport to your chosen file name dynamically.
