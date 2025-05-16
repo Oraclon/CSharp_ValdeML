@@ -79,3 +79,8 @@ class Program
 
 //find /usr/local -name cuda_runtime.h
 
+When compiling CUDA code with nvcc, it will automatically look in the right place for cuda_runtime.h.
+
+But if you're using g++, clang++, or other C++ compilers alongside CUDA, you might need to explicitly add the include path:
+-I /usr/local/cuda/include
+
