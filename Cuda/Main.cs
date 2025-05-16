@@ -71,3 +71,7 @@ class Program
 //  </None>
 //</ItemGroup>
 //This will ensure that the .so file is copied to the output directory (e.g., bin/Debug/net5.0/).
+
+//Place .so in the correct location:
+//-Either in the same directory as your .exe or in a system directory (like /usr/lib).
+//-Alternatively, set the LD_LIBRARY_PATH to point to the folder where your .so is located.
