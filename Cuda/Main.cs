@@ -77,3 +77,5 @@ class Program
 //-Alternatively, set the LD_LIBRARY_PATH to point to the folder where your .so is located.
 //export LD_LIBRARY_PATH=/home/user/libs:$LD_LIBRARY_PATH
 
+//find /usr/local -name cuda_runtime.h
+
