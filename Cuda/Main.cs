@@ -75,3 +75,5 @@ class Program
 //Place .so in the correct location:
 //-Either in the same directory as your .exe or in a system directory (like /usr/lib).
 //-Alternatively, set the LD_LIBRARY_PATH to point to the folder where your .so is located.
+//export LD_LIBRARY_PATH=/home/user/libs:$LD_LIBRARY_PATH
+
