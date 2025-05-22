@@ -1,0 +1,157 @@
+If you want to add more blocks to the CUDA kernel, you need to modify the kernel launch configuration to handle multiple blocks and potentially multiple threads within each block. The goal is to properly assign each thread to process a part of the data, ensuring that the entire array is processed efficiently.
+
+Adding More Blocks:
+Let's break this down step by step:
+
+Handling Multiple Blocks:
+
+If you have more rows of data, you can assign each block to a specific row (or group of rows) in the array.
+
+Each thread within the block can handle the summing of corresponding columns for that particular row or group of rows.
+
+Grid and Block Configuration:
+
+If you're using more blocks, you'll need to launch the kernel with a 2D grid (or even 1D, depending on the use case), where each block processes one or more rows.
+
+The threads within each block will handle processing each element of a row.
+
+Example:
+Let’s assume that we have more rows and want to modify the code to handle more blocks. For example, if we have 4 rows and each row has 2 sub-arrays with 2 elements, we can use multiple blocks to process this data.
+
+Modified Example with More Blocks:
+Example Array (4 rows):
+cpp
+Copy
+Edit
+array = [
+  [ [0, 1], [2, 3] ],  // Row 0
+  [ [4, 5], [6, 7] ],  // Row 1
+  [ [8, 9], [10, 11] ],  // Row 2
+  [ [12, 13], [14, 15] ]  // Row 3
+]
+Steps:
+We will use 4 blocks, each responsible for processing one row.
+
+Each block will have 1 thread per column in that row, so we will have 2 threads per block, each summing one column (since each row has 2 columns).
+
+CUDA Code to Handle Multiple Blocks:
+cpp
+Copy
+Edit
+#include <iostream>
+#include <cuda_runtime.h>
+
+__global__ void sumArraysKernel(int *array, int *newArray, int numRows, int numCols) {
+    // Each block is responsible for one row
+    int row = blockIdx.x;  // blockIdx.x corresponds to which row we are processing
+
+    if (row < numRows) {
+        // Each thread handles one element in the row (2 threads per row, one per column)
+        int col = threadIdx.x;
+
+        if (col < numCols) {
+            // Calculate the index for the flat array based on row and column
+            newArray[2 * col] = array[2 * col + row * numCols] + array[2 * col + numCols + row * numCols];
+            newArray[2 * col + 1] = array[2 * col + 1 + row * numCols] + array[2 * col + 1 + numCols + row * numCols];
+        }
+    }
+}
+
+int main() {
+    const int numRows = 4;  // Number of rows
+    const int numCols = 2;  // Number of columns
+    const int numElements = numRows * numCols * 2;  // Total number of elements (2 values per column)
+    
+    // Example array (flattened)
+    int array[numElements] = {
+        0, 1, 2, 3,  // Row 0
+        4, 5, 6, 7,  // Row 1
+        8, 9, 10, 11, // Row 2
+        12, 13, 14, 15 // Row 3
+    };
+
+    int newArray[numCols * 2];  // Result array to store the sums
+
+    int *d_array, *d_newArray;
+
+    // Allocate memory on the device
+    cudaMalloc((void **)&d_array, numElements * sizeof(int));
+    cudaMalloc((void **)&d_newArray, numCols * 2 * sizeof(int));
+
+    // Copy the array to the device
+    cudaMemcpy(d_array, array, numElements * sizeof(int), cudaMemcpyHostToDevice);
+
+    // Launch the kernel with numRows blocks and numCols threads per block
+    sumArraysKernel<<<numRows, numCols>>>(d_array, d_newArray, numRows, numCols);
+
+    // Copy the result back to the host
+    cudaMemcpy(newArray, d_newArray, numCols * 2 * sizeof(int), cudaMemcpyDeviceToHost);
+
+    // Output the result
+    std::cout << "newArray = [";
+    for (int i = 0; i < numCols; ++i) {
+        std::cout << "[" << newArray[2 * i] << ", " << newArray[2 * i + 1] << "]";
+        if (i < numCols - 1) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "]" << std::endl;
+
+    // Free device memory
+    cudaFree(d_array);
+    cudaFree(d_newArray);
+
+    return 0;
+}
+Explanation of the Changes:
+Grid Configuration:
+
+We now launch numRows blocks, where each block processes one row. For example, if numRows = 4, we will launch 4 blocks. Each block processes one row of the array.
+
+Each thread in a block processes one column in the row, so we have 2 threads per block (numCols = 2).
+
+Thread Assignment:
+
+Each thread is assigned a specific column to process. For each block (which corresponds to a row), the threads sum the elements in that row across columns.
+
+blockIdx.x is used to identify which row we are processing, and threadIdx.x is used to identify the column in the row.
+
+Flattened Array:
+
+The array is flattened into a 1D array. For example, array[0] corresponds to the first element in the first row, and array[1] corresponds to the second element in the first row, etc.
+
+The calculation for the indices is based on the row (row) and column (col).
+
+Kernel:
+
+The kernel processes each row in a separate block. The threads within the block handle the summing of the elements across the columns.
+
+Output:
+For the above example input array:
+
+cpp
+Copy
+Edit
+array = [
+  [ [0, 1], [2, 3] ],  // Row 0
+  [ [4, 5], [6, 7] ],  // Row 1
+  [ [8, 9], [10, 11] ],  // Row 2
+  [ [12, 13], [14, 15] ]  // Row 3
+]
+The output will be:
+
+cpp
+Copy
+Edit
+newArray = [
+  [4, 6],  // Sum for row 0: [0+4, 1+5]
+  [10, 12], // Sum for row 1: [2+6, 3+7]
+  [18, 20], // Sum for row 2: [8+10, 9+11]
+  [26, 28]  // Sum for row 3: [12+14, 13+15]
+]
+Key Points:
+Multiple blocks: Each block processes a row, and each thread within a block processes one column of the row.
+
+Thread-block organization: We have numRows blocks, with numCols threads per block. Each thread handles one element in the array.
+
+Efficient processing: This setup allows parallel processing of multiple rows using multiple blocks, and within each block, threads work together to process columns.
